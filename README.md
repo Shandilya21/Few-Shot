@@ -10,5 +10,5 @@ The objective of this repository is to working in few shot, zero shot learning r
 * Learning to Compare: Relation Network for Few-Shot Learning [Sung F et al. (2018)](https://arxiv.org/pdf/1711.06025v2.pdf)
 * Optimization as a Model For Few-Shot Learning [Ravi. S et al. (2017)](https://openreview.net/pdf?id=rJY0-Kcll)
 * How To Train Your MAML [Antreas A et al. (2017)](https://arxiv.org/pdf/1810.09502.pdf)
-* [Theory anD Concepts](https://towardsdatascience.com/advances-in-few-shot-learning-a-guided-tour-36bc10a68b77)
+* [Theory and Concepts](https://towardsdatascience.com/advances-in-few-shot-learning-a-guided-tour-36bc10a68b77)
 * [Implementation in PyTorch](https://towardsdatascience.com/advances-in-few-shot-learning-reproducing-results-in-pytorch-aba70dee541d)
