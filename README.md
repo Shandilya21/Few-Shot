@@ -13,7 +13,7 @@ few-shot image classification in fashion domain, using state of the art Prototyp
 7. How To Train Your MAML [Antreas A et al. (2017)](https://arxiv.org/pdf/1810.09502.pdf)
 8. [Theory and Concepts](https://towardsdatascience.com/advances-in-few-shot-learning-a-guided-tour-36bc10a68b77)
 9. [Implementation in PyTorch](https://towardsdatascience.com/advances-in-few-shot-learning-reproducing-results-in-pytorch-aba70dee541d)
-10. [Few Shot Learning in CVPR 2019]((https://towardsdatascience.com/few-shot-learning-in-cvpr19-6c6892fc8c5))
+10. [Few Shot Learning in CVPR 2019](https://towardsdatascience.com/few-shot-learning-in-cvpr19-6c6892fc8c5)
 
 ### What is Few Shot Learning?
 With advancement of machine learning due to computational resources, and has been highly successful in data intensive application but often slow down when the data is small. Recently, few shot learning (FSL) is proposed to tackle this problem. Using prior knowledge, FSL can generalize to new tasks containing few samples with supervision. Based on how prior knowledge can be used to handle this core issue, FSL methods categorises into three perspectives: (i) data, which uses prior knowledge to augment the supervised experience; (ii) model, which uses prior knowledge to reduce the size of the hypothesis
@@ -25,7 +25,7 @@ Consider a learning task T , FSL deals with a data set D = {Dtrain,Dtest} consis
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/FSL_methods.jpg)
 
 ## Data Set
-Download the datasets from here (small)[Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full)[Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1) Download any version of the dataset as per your requirement. I suggest to test how it works on small version and then build on complete version of the dataset.
+Download the datasets from here (small) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1) Download any version of the dataset as per your requirement. I suggest to test how it works on small version and then build on complete version of the dataset.
 
 **DataSet Description**
 - id: Image id map with fashion images.
