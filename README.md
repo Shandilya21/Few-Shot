@@ -20,12 +20,12 @@ With advancement of machine learning due to computational resources, and has bee
 space; and (iii) algorithm, which uses prior knowledge to alter the search for the best hypothesis in the given hypothesis space. 
 
 ### Notation and Terminology
-Consider a learning task T , FSL deals with a data set D = {Dtrain,Dtest} consisting of a training set Dtrain = {(xi,yi)} i=1 to I where I is small, and a testing set Dtest = {xtest}. Let p(x,y) be the ground-truth joint probability distribution of input x and output y, and ˆh be the optimal hypothesis from x to y. FSL learns to discover ˆh by fitting Dtrain and testing on Dtest. To approximate ˆh, the FSL model determines a hypothesis space H of hypotheses h(θ)’ where θ denotes all the parameters used by h. Here, a parametric h is used, as a nonparametric model often requires large data sets, and thus not suitable for FSL. Below Figure, illustrates about different perspective of FSL methods to solve problem.
+Consider a learning task T , FSL deals with a data set D = {Dtrain,Dtest} consisting of a training set Dtrain = {(xi,yi)} i=1 to I where I is small, and a testing set Dtest = {xtest}. Let p(x,y) be the ground-truth joint probability distribution of input x and output y, and ˆh be the optimal hypothesis from x to y. FSL learns to discover ˆh by fitting Dtrain and testing on Dtest. To approximate ˆh, the FSL model determines a hypothesis space H of hypotheses h(θ)’ where θ denotes all the parameters used by h. Here, a parametric h is used, as a nonparametric model often requires large data sets, and thus not suitable for FSL. Below Figure, illustrates about different perspective for FSL methods to solve problem.
 
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/FSL_methods.jpg)
 
 ## Data Set
-Download the datasets from here (small) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1) Download any version of the dataset as per your requirement. I suggest to test how it works on small version and then build on complete version of the dataset.
+Download the datasets from here (small) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1). Use any version of the dataset as per your choice. I suggest to test how it works on small version and then build on complete version of the dataset.
 
 **DataSet Description**
 - id: Image id map with fashion images.
