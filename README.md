@@ -1,4 +1,4 @@
-## Few Short, Zero Shot Learning Research
+## Few Short, and Zero Shot Learning Research
 
 The objective of this repository is to working in few shot, zero shot learning research and contains tested and clean code. This is an implementation of
 few-shot image classification in fashion domain, using state of the art Prototypical Networks, and other FSL network, etc.
