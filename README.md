@@ -50,3 +50,5 @@ Download the datasets from here (small-version) [Download](https://www.kaggle.co
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/proto_nets_diagram.png)
 
 To achieve optimal few shot performance [Snell et.al](https://arxiv.org/pdf/1703.05175.pdf) apply compelling inductive bias in class prototype form. The assumption made to consider an embedding in which samples from each class cluster around the **prototypical representation** which is nothing but the mean of each sample. However, In the n-shot classification problem, where n > 1, it performed by taking a class to the closest prototype. With this, the paper, has a strong theoretical proof on using euclidean distance over cosine distance which also represents the class mean of prototypical representations. Prototypical Networks also work for **Zero-Shot Learning**, which can learn from rich attributes or natural language descriptions. For eg. "color", "master category", "season", and "product display name", etc.
+
+## Setup
