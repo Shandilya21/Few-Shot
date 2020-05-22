@@ -1,7 +1,6 @@
 ## Few Short, Zero Shot Learning Research
 
-The objective of this repository is to working in few shot, zero shot learning research and contains tested and clean code. This is an implementation of
-few-shot image classification in fashion domain, using state of the art Prototypical Networks, and other FSL network, etc.
+The objective of the repository is working on a few shot, and zero-shot learning problems and also to write readable, clean, and tested code. This includes the implementation of a few-shot image classification problems, using algorithms such as Prototypical Networks, etc.
 
 ### Important Blogs and Paper
 1. Generalizing from a Few Examples: A Survey on Few-Shot Learning [QUANMING Y et al. (2020)](https://arxiv.org/pdf/1904.05046.pdf)
@@ -16,32 +15,38 @@ few-shot image classification in fashion domain, using state of the art Prototyp
 10. [Few Shot Learning in CVPR 2019](https://towardsdatascience.com/few-shot-learning-in-cvpr19-6c6892fc8c5)
 
 ### What is Few Shot Learning?
-With advancement of machine learning due to computational resources, and has been highly successful in data intensive application but often slow down when the data is small. Recently, few shot learning (FSL) is proposed to tackle this problem. Using prior knowledge, FSL can generalize to new tasks containing few samples with supervision. Based on how prior knowledge can be used to handle this core issue, FSL methods categorises into three perspectives: (i) data, which uses prior knowledge to augment the supervised experience; (ii) model, which uses prior knowledge to reduce the size of the hypothesis
-space; and (iii) algorithm, which uses prior knowledge to alter the search for the best hypothesis in the given hypothesis space. 
+With the advancement of machine learning mainly in computational resources, and has been highly successful in data-intensive application but often slows down when the data is small. Recently, few-shot learning (FSL) is proposed to tackle this problem. Using prior knowledge, FSL can generalize to new tasks containing few samples with supervision. Based on how prior knowledge can be used to handle this core issue, FSL methods categorize into three perspectives: (i) data, which uses prior knowledge to augment the supervised experience (ii) model, which uses prior knowledge to reduce the size of the hypothesis
+space and (iii) algorithm, which uses prior knowledge to alter the search for the best hypothesis in the given hypothesis space.
 
 ### Notation and Terminology
-Consider a learning task T , FSL deals with a data set D = {Dtrain,Dtest} consisting of a training set Dtrain = {(xi,yi)} i=1 to I where I is small, and a testing set Dtest = {xtest}. Let p(x,y) be the ground-truth joint probability distribution of input x and output y, and ˆh be the optimal hypothesis from x to y. FSL learns to discover ˆh by fitting Dtrain and testing on Dtest. To approximate ˆh, the FSL model determines a hypothesis space H of hypotheses h(θ)’ where θ denotes all the parameters used by h. Here, a parametric h is used, as a nonparametric model often requires large data sets, and thus not suitable for FSL. Below Figure, illustrates about different perspective of FSL methods to solve problem.
+Consider a learning task T , FSL deals with a data set D = {Dtrain,Dtest} consisting of a training set Dtrain = {(xi,yi)} i = 1 to I where I is small, and a testing set Dtest = {xtest}. Let p(x,y) be the ground-truth joint probability distribution of input x and output y, and ˆh be the optimal hypothesis from x to y. FSL learns to discover ˆh by fitting Drain and testing on Dtest. To approximate ˆh, the FSL model determines a hypothesis space H of hypotheses h(θ) where θ denotes all the parameters used by h. Here, a parametric h is used, as a nonparametric model often requires large data sets, and thus not suitable for FSL. The below Figure, illustrates a different perspective of FSL method to solve the problems.
 
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/FSL_methods.jpg)
 
 ## Data Set
-Download the datasets from here (small) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1) Download any version of the dataset as per your requirement. I suggest to test how it works on small version and then build on complete version of the dataset.
+Download the datasets from here (small-version) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full-version) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1) Download any version of the dataset as per your requirement. Preferable to perform test how models works on smaller version and then build on full version of the dataset.
 
 **DataSet Description**
-- id: Image id map with fashion images.
+- id: Image id map with class of images.
 - gender: Gender wise fashion items (M/W), etc. 
-- masterCategory: categories contains type of fashion items such as Apparel, Accessories, etc.
-- SubCategory: categories contains the specific fashion item category collections, such as Footwear, Watches, topwear, etc.  
-- articleType: categories contains the items specifc such as Topwear -> Tshirts, Shirts, Shoes --> Casual, Bags --> Handbags, etc.  
+- masterCategory: Categories contains type of fashion items such as Apparel, Accessories, etc.
+- SubCategory: Categories contains the specific fashion item category collections, such as Footwear, Watch etc.  
+- articleType: Categories contains the items specifc such as Topwear -> Tshirts, Shirts, Shoes --> Casual, etc.  
 - baseColour: Color of the articleType items such as NavyBlue, Black, Grey, etc. 
-- season: cloth for specific suitable based on seasons (fall/winter/summer)
-- usage: item dedicated to specific purpose, such as wedding, ethinic, casual, formal, etc.
-- displayName: Name displayed on items with specific features attributes 
+- season: fashion items specific to seasons (fall/winter/summer).
+- usage: Fashion items for specific purposes, such as casual, ethnic, etc.
+- displayName: Name displayed on items with specific attributes. 
 
 
-| id  | gender | masterCategory | SubCategory | articleType | baseColour | season | usage  | productDisplayName                 | 
-|-----|--------|----------------|-------------|-------------|------------|--------|--------|------------------------------------|
-|1163 | Male   | Apparel        | TopWear     | Shirt       | NavyBlue	 | Fall   | Ethnic | Turtle Check Men Navy Blue Shirt   |
-|1165 | Female | Apparal        | BottomWear  | Jeans       | Black      | Summer | Casual | Peter England Female Party Jeans   |
-|2152 | Female | Accessories    | Watches     | Watches     | Silver	 | Winter | Formal | Titan Women Silver Watch           |
-|1455 | Girl   | Apparel        | TopWeat     | Tshirt      | Grey		 | Summer | Casual | Gini and Jony Girls Knit White Top |
+| id | gender| masterCategory| SubCategory| articleType| baseColour| season| usage | productDisplayName        | 
+|----|-------|---------------|------------|------------|-----------|-------|-------|---------------------------|
+|1163| Male  | Apparel       | TopWear    | Shirt      | NavyBlue  | Fall  | Ethnic| Turtle Men Navy Blue Shirt|
+|1165| Female| Apparal       | BottomWear | Jeans      | Black     | Summer| Casual| Levis Female Black Jeans  |
+|2152| Female| Accessories   | Watches    | Watches    | Silver	   | Winter| Formal| Titan Women Silver Watch  |
+|1455| Girl  | Apparel       | TopWeat    | Tshirt     | Grey	   | Summer| Casual| Gini Jony Girls Knit Top  |
+
+
+## Prototypical Networks
+![](https://github.com/Shandilya21/few_shot_research/raw/master/images/proto_nets_diagram.png)
+
+To achieve optimal few shot performance [Snell et.al](https://arxiv.org/pdf/1703.05175.pdf) apply compelling inductive bias in class prototype form. The assumption made to consider an embedding in which samples from each class cluster around the **prototypical representation** which is nothing but the mean of each sample. However, In the n-shot classification problem, where n > 1, it performed by taking a class to the closest prototype. With this, the paper, has a strong theoretical proof on using euclidean distance over cosine distance which also represents the class mean of prototypical representations. Prototypical Networks also work for **Zero-Shot Learning**, which can learn from rich attributes or natural language descriptions. For eg. "color", "master category", "season", and "product display name", etc.
