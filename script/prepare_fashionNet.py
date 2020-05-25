@@ -21,10 +21,10 @@ from few_shot.utils import mkdir, rmdir
 # Creating and deleting folder/files
 rmdir(DATA_PATH + '/fashionNet/images_background')
 rmdir(DATA_PATH + '/fashionNet/images_evaluation')
-# rmdir(DATA_PATH + '/fashionNet/refac_Images')
+rmdir(DATA_PATH + '/fashionNet/refac_Images')
 mkdir(DATA_PATH + '/fashionNet/images_background')
 mkdir(DATA_PATH + '/fashionNet/images_evaluation')
-# mkdir(DATA_PATH + '/fashionNet/refac_Images')
+mkdir(DATA_PATH + '/fashionNet/refac_Images')
 
 print("Is the DATA_PATH is Correct?", os.path.exists(DATA_PATH + '/fashionNet/images/'))
 
@@ -110,7 +110,7 @@ for root, _, files in os.walk(DATA_PATH + '/fashionNet/refac_Images'):
             # Send to correct folder
             if class_name not in evaluation_classes and background_classes:
             	continue
-            subset_folder = 'images_background' if class_name in background_classes else 'images_evaluation' 
+            subset_folder = 'images_background' if class_name in background_classes not in evaluation_classes else 'images_evaluation' 
             src = '{}/{}'.format(root, f)
             dst = DATA_PATH + '/fashionNet/{}/{}/{}'.format(subset_folder, class_name, image_name)
-            shutil.copy(src, dst) #Time Complexity O(n), for n num_of samples
+            shutil.copy(src, dst) #Time Complexity O(n), for n num_of samples	
