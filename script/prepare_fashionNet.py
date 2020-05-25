@@ -21,10 +21,10 @@ from few_shot.utils import mkdir, rmdir
 # Creating and deleting folder/files
 rmdir(DATA_PATH + '/fashionNet/images_background')
 rmdir(DATA_PATH + '/fashionNet/images_evaluation')
-rmdir(DATA_PATH + '/fashionNet/refac_Images')
+# rmdir(DATA_PATH + '/fashionNet/refac_Images')
 mkdir(DATA_PATH + '/fashionNet/images_background')
 mkdir(DATA_PATH + '/fashionNet/images_evaluation')
-mkdir(DATA_PATH + '/fashionNet/refac_Images')
+# mkdir(DATA_PATH + '/fashionNet/refac_Images')
 
 print("Is the DATA_PATH is Correct?", os.path.exists(DATA_PATH + '/fashionNet/images/'))
 
@@ -42,6 +42,7 @@ df = df.sort_values(by=['id'], ascending=True, inplace=False)
 df['class_id'] = df.apply(lambda row: str(row['subCategory']) + '__' + str(row['articleType']) + '__' +  str(row['id']) + '.jpg', axis=1)
 for name in df['class_id']:
 	_classes.append(name)
+
 '''
 _classes: ['Topwear__Tshirts__1163.jpg', 'Topwear__Tshirts__1164.jpg', 'Topwear__Tshirts__1165.jpg', 'Bags__Backpacks__1525.jpg', 
 		'Bags__Backpacks__1526.jpg']
@@ -66,7 +67,7 @@ for root, _, files in os.walk(DATA_PATH + '/fashionNet/refac_Images/'):
 class_name = list(set(classes))
 # print(len(class_name))
 
-# # Meta Training and Testing Split (Support and Query set)
+# Meta Training and Testing Split (Support and Query set)
 meta_train_PATH = DATA_PATH + '/fashionNet/Meta/meta_train.csv'
 meta_train_class = []
 df = pd.read_csv(meta_train_PATH, engine='python')
@@ -107,7 +108,9 @@ for root, _, files in os.walk(DATA_PATH + '/fashionNet/refac_Images'):
             class_name = name[0] + '__' + name[1]
             image_name = name[0] + '__' + name[1] + '__' + name[2]
             # Send to correct folder
-            subset_folder = 'images_evaluation' if class_name in evaluation_classes else 'images_background'
+            if class_name not in evaluation_classes and background_classes:
+            	continue
+            subset_folder = 'images_background' if class_name in background_classes else 'images_evaluation' 
             src = '{}/{}'.format(root, f)
             dst = DATA_PATH + '/fashionNet/{}/{}/{}'.format(subset_folder, class_name, image_name)
-            shutil.copy(src, dst)
+            shutil.copy(src, dst) #Time Complexity O(n), for n num_of samples
