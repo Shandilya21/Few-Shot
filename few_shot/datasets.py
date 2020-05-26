@@ -10,7 +10,6 @@ import pandas as pd
 import numpy as np
 import os
 from config import DATA_PATH
-import pdb
 
 
 class fashionNet(Dataset):
