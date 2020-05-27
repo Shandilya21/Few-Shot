@@ -65,13 +65,11 @@ Use virtualenv (preferable). you can find link for virtualenv setup as [(virtual
 Clone the Repository
 ```
 git clone https://github.com/Shandilya21/few_shot_research.git
-
 ```
 Listed in "requirements.txt" Install neccesssary supporting packages or libraries for reproducing similar results.
 
 ```
 pip install -r requirements.txt
-
 ```
 Download Data from the Link, and put inside data folder. Extract the zip files contains Images, and csv file for fashion product items descriptions or other details. refer to **Data Descriptions" section for an overview.
 
@@ -83,7 +81,6 @@ Follow the following instructions to prepare the fashionNet dataset
 
 ```
 python script/prepare_fashionNet.py
-
 ```
 After acquiring the data and running the setup scripts your folder structure would look like
 
@@ -94,7 +91,7 @@ DATA_PATH/
         images_evaluation/
 
 ```
-If you want to reproduce the results on fashionNet DataSet, use the preprocessed data. [Download](https://drive.google.com/open?id=1QcggrlCX5H7Q_FfXjko8rrlbVh1CtL8P) it from here and extract it inside **DATA_PATH/fashionNet/** folder.
+If you want to reproduce the results on fashionNet DataSet, use the preprocessed data. [(Download)](https://drive.google.com/open?id=1QcggrlCX5H7Q_FfXjko8rrlbVh1CtL8P) it from here and extract it inside **DATA_PATH/fashionNet/** folder.
 
 ## Prototypical Networks
 
