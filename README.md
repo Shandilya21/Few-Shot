@@ -15,7 +15,7 @@ The objective of the repository is working on a few shot, and zero-shot learning
 9. [Implementation in PyTorch](https://towardsdatascience.com/advances-in-few-shot-learning-reproducing-results-in-pytorch-aba70dee541d)
 10. [Few Shot Learning in CVPR 2019](https://towardsdatascience.com/few-shot-learning-in-cvpr19-6c6892fc8c5)
 
-# Introduction
+## Introduction
 
 ### What is Few Shot Learning?
 With the advancement of machine learning mainly in computational resources, and has been highly successful in data-intensive application but often slows down when the data is small. Recently, few-shot learning (FSL) is proposed to tackle this problem. Using prior knowledge, FSL can generalize to new tasks containing few samples with supervision. Based on how prior knowledge can be used to handle this core issue, FSL methods categorize into three perspectives: (i) data, which uses prior knowledge to augment the supervised experience (ii) model, which uses prior knowledge to reduce the size of the hypothesis
@@ -26,8 +26,8 @@ Consider a learning task T , FSL deals with a data set D = {Dtrain,Dtest} consis
 
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/FSL_methods.jpg)
 
-# Definition and Theory
-## Prototypical Networks
+## Theory
+### Prototypical Networks
 To achieve optimal few shot performance [(Snell et.al)](https://arxiv.org/pdf/1703.05175.pdf) apply compelling inductive bias in class prototype form. The assumption made to consider an embedding in which samples from each class cluster around the **prototypical representation** which is nothing but the mean of each sample. However, In the n-shot classification problem, where n > 1, it performed by taking a class to the closest prototype. With this, the paper, has a strong theoretical proof on using euclidean distance over cosine distance which also represents the class mean of prototypical representations. Prototypical Networks also work for **Zero-Shot Learning**, which can learn from rich attributes or natural language descriptions. For eg. "color", "master category", "season", and "product display name", etc.
 
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/proto_nets_diagram.png)
@@ -57,8 +57,8 @@ Download the datasets from here (small-version) [(Download)](https://www.kaggle.
 |1455| Girl  | Apparel       | TopWeat    | Tshirt     | Grey	   | Summer| Casual| Gini Jony Girls Knit Top  |
 
 
-## Setup
-### Requirements
+## Experiment Setup
+### 1.1 Requirements
 
 Use virtualenv (preferable). you can find link for virtualenv setup as [(virtualenv1)](https://stackoverflow.com/questions/52816156/how-to-create-virtual-environment-for-python-3-7-0) and [(virtualenv2)](https://stackoverflow.com/questions/43069780/how-to-create-virtual-env-with-python3/43070301).
 
@@ -73,7 +73,7 @@ Listed in "requirements.txt" Install neccesssary supporting packages or librarie
 pip install -r requirements.txt
 
 ```
-Download Data from the Link above, and put in the data folder. Extract the zip files contains Images (44441) for small version, and csv file for product items descriptions or other details. refer to **Data Descriptions" section for an overview.
+Download Data from the Link, and put inside data folder. Extract the zip files contains Images, and csv file for fashion product items descriptions or other details. refer to **Data Descriptions" section for an overview.
 
 Edit DATA_PATH in config.py and replace with the location where you stored the fashionNet dataset.
 
@@ -96,7 +96,7 @@ DATA_PATH/
 ```
 If you want to reproduce the results on fashionNet DataSet, use the preprocessed data. [Download](https://drive.google.com/open?id=1QcggrlCX5H7Q_FfXjko8rrlbVh1CtL8P) it from here and extract it inside **DATA_PATH/fashionNet/** folder.
 
-![Prototypical Networks]
+## 1.2 Prototypical Networks
 
 Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks. Refer to Descriptions section in detailed.
 
