@@ -58,7 +58,7 @@ Download the datasets from here (small-version) [(Download)](https://www.kaggle.
 
 
 ## Experiment Setup
-### 1.1 Requirements
+### Requirements
 
 Use virtualenv (preferable). you can find link for virtualenv setup as [(virtualenv1)](https://stackoverflow.com/questions/52816156/how-to-create-virtual-environment-for-python-3-7-0) and [(virtualenv2)](https://stackoverflow.com/questions/43069780/how-to-create-virtual-env-with-python3/43070301).
 
@@ -96,7 +96,7 @@ DATA_PATH/
 ```
 If you want to reproduce the results on fashionNet DataSet, use the preprocessed data. [Download](https://drive.google.com/open?id=1QcggrlCX5H7Q_FfXjko8rrlbVh1CtL8P) it from here and extract it inside **DATA_PATH/fashionNet/** folder.
 
-## 1.2 Prototypical Networks
+## Prototypical Networks
 
 Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks. Refer to Descriptions section in detailed.
 
@@ -109,3 +109,5 @@ Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks
 - k-test: Number of classes in validation tasks
 - q-train: Query samples per class for training tasks
 - q-test: Query samples per class for validation tasks
+
+In the main paper of Prototypical network, the author present strong arguments of euclidean distance over cosine distance which also represents the class mean of prototypical representations which we reciprocate in the experiments.
