@@ -2,17 +2,20 @@
 
 The objective of the repository is working on a few shot, and zero-shot learning problems and also to write readable, clean, and tested code. This includes the implementation of a few-shot image classification problems, using algorithms such as Prototypical Networks, etc.
 
-### Important Blogs and Paper
-1. Generalizing from a Few Examples: A Survey on Few-Shot Learning [QUANMING Y et al. (2020)](https://arxiv.org/pdf/1904.05046.pdf)
-2. Prototypical Networks for Few-shot Learning [J. Snellet al. (2017)](https://arxiv.org/pdf/1703.05175.pdf)
-3. Matching Networks for One Shot Learning [Vinyals et al. (2017)](https://arxiv.org/pdf/1606.04080.pdf)
-4. Model-Agnostic Meta-Learning for Fast Adaptation of Deep Networks [Finn et al. (2017)](https://arxiv.org/pdf/1703.03400v3.pdf)
-5. Learning to Compare: Relation Network for Few-Shot Learning [Sung F et al. (2018)](https://arxiv.org/pdf/1711.06025v2.pdf)
-6. Optimization as a Model For Few-Shot Learning [Ravi. S et al. (2017)](https://openreview.net/pdf?id=rJY0-Kcll)
-7. How To Train Your MAML [Antreas A et al. (2017)](https://arxiv.org/pdf/1810.09502.pdf)
+## Important Blogs and Paper
+
+1. Generalizing from a Few Examples: A Survey on Few-Shot Learning [(QUANMING Y et al. (2020))](https://arxiv.org/pdf/1904.05046.pdf)
+2. Prototypical Networks for Few-shot Learning [(J. Snellet al. (2017))](https://arxiv.org/pdf/1703.05175.pdf)
+3. Matching Networks for One Shot Learning [(Vinyals et al. (2017))](https://arxiv.org/pdf/1606.04080.pdf)
+4. Model-Agnostic Meta-Learning for Fast Adaptation of Deep Networks [(Finn et al. (2017))](https://arxiv.org/pdf/1703.03400v3.pdf)
+5. Learning to Compare: Relation Network for Few-Shot Learning [(Sung F et al. (2018))](https://arxiv.org/pdf/1711.06025v2.pdf)
+6. Optimization as a Model For Few-Shot Learning [(Ravi. S et al. (2017))](https://openreview.net/pdf?id=rJY0-Kcll)
+7. How To Train Your MAML [(Antreas A et al. (2017))](https://arxiv.org/pdf/1810.09502.pdf)
 8. [Theory and Concepts](https://towardsdatascience.com/advances-in-few-shot-learning-a-guided-tour-36bc10a68b77)
 9. [Implementation in PyTorch](https://towardsdatascience.com/advances-in-few-shot-learning-reproducing-results-in-pytorch-aba70dee541d)
 10. [Few Shot Learning in CVPR 2019](https://towardsdatascience.com/few-shot-learning-in-cvpr19-6c6892fc8c5)
+
+# Introduction
 
 ### What is Few Shot Learning?
 With the advancement of machine learning mainly in computational resources, and has been highly successful in data-intensive application but often slows down when the data is small. Recently, few-shot learning (FSL) is proposed to tackle this problem. Using prior knowledge, FSL can generalize to new tasks containing few samples with supervision. Based on how prior knowledge can be used to handle this core issue, FSL methods categorize into three perspectives: (i) data, which uses prior knowledge to augment the supervised experience (ii) model, which uses prior knowledge to reduce the size of the hypothesis
@@ -23,11 +26,19 @@ Consider a learning task T , FSL deals with a data set D = {Dtrain,Dtest} consis
 
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/FSL_methods.jpg)
 
+# Definition and Theory
+## Prototypical Networks
+To achieve optimal few shot performance [(Snell et.al)](https://arxiv.org/pdf/1703.05175.pdf) apply compelling inductive bias in class prototype form. The assumption made to consider an embedding in which samples from each class cluster around the **prototypical representation** which is nothing but the mean of each sample. However, In the n-shot classification problem, where n > 1, it performed by taking a class to the closest prototype. With this, the paper, has a strong theoretical proof on using euclidean distance over cosine distance which also represents the class mean of prototypical representations. Prototypical Networks also work for **Zero-Shot Learning**, which can learn from rich attributes or natural language descriptions. For eg. "color", "master category", "season", and "product display name", etc.
+
+![](https://github.com/Shandilya21/few_shot_research/raw/master/images/proto_nets_diagram.png)
+
 ## Data Set
-Download the datasets from here (small-version) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full-version) [Download](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1) Download any version of the dataset as per your requirement. Preferable to perform test how models works on smaller version and then build on full version of the dataset.
+
+Download the datasets from here (small-version) [(Download)](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full-version) [(Download)](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1) Download any version of the dataset as per your requirement. Preferable to perform test how models works on smaller version and then build on full version of the dataset.
 
 **DataSet Description**
-- id: Image id map with class of images.
+
+- id: Images id as in images_folder/.
 - gender: Gender wise fashion items (M/W), etc. 
 - masterCategory: Categories contains type of fashion items such as Apparel, Accessories, etc.
 - SubCategory: Categories contains the specific fashion item category collections, such as Footwear, Watch etc.  
@@ -46,9 +57,55 @@ Download the datasets from here (small-version) [Download](https://www.kaggle.co
 |1455| Girl  | Apparel       | TopWeat    | Tshirt     | Grey	   | Summer| Casual| Gini Jony Girls Knit Top  |
 
 
-## Prototypical Networks
-![](https://github.com/Shandilya21/few_shot_research/raw/master/images/proto_nets_diagram.png)
-
-To achieve optimal few shot performance [Snell et.al](https://arxiv.org/pdf/1703.05175.pdf) apply compelling inductive bias in class prototype form. The assumption made to consider an embedding in which samples from each class cluster around the **prototypical representation** which is nothing but the mean of each sample. However, In the n-shot classification problem, where n > 1, it performed by taking a class to the closest prototype. With this, the paper, has a strong theoretical proof on using euclidean distance over cosine distance which also represents the class mean of prototypical representations. Prototypical Networks also work for **Zero-Shot Learning**, which can learn from rich attributes or natural language descriptions. For eg. "color", "master category", "season", and "product display name", etc.
-
 ## Setup
+### Requirements
+
+Use virtualenv (preferable). you can find link for virtualenv setup as [(virtualenv1)](https://stackoverflow.com/questions/52816156/how-to-create-virtual-environment-for-python-3-7-0) and [(virtualenv2)](https://stackoverflow.com/questions/43069780/how-to-create-virtual-env-with-python3/43070301).
+
+Clone the Repository
+```
+git clone https://github.com/Shandilya21/few_shot_research.git
+
+```
+Listed in "requirements.txt" Install neccesssary supporting packages or libraries for reproducing similar results.
+
+```
+pip install -r requirements.txt
+
+```
+Download Data from the Link above, and put in the data folder. Extract the zip files contains Images (44441) for small version, and csv file for product items descriptions or other details. refer to **Data Descriptions" section for an overview.
+
+Edit DATA_PATH in config.py and replace with the location where you stored the fashionNet dataset.
+
+##### Data Preperations for fashionNet Datasset
+
+Follow the following instructions to prepare the fashionNet dataset
+
+```
+python script/prepare_fashionNet.py
+
+```
+After acquiring the data and running the setup scripts your folder structure would look like
+
+```
+DATA_PATH/
+    fashionNet/
+        images_background/
+        images_evaluation/
+
+```
+If you want to reproduce the results on fashionNet DataSet, use the preprocessed data. [Download](https://drive.google.com/open?id=1QcggrlCX5H7Q_FfXjko8rrlbVh1CtL8P) it from here and extract it inside **DATA_PATH/fashionNet/** folder.
+
+![Prototypical Networks]
+
+Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks. Refer to Descriptions section in detailed.
+
+**Arguments**
+- dataset: {'fashionNet'}.
+- distance: {'l2', 'cosine'}. Which distance metric to use
+- n-train: Support samples per class for training tasks
+- n-test: Support samples per class for validation tasks
+- k-train: Number of classes in training tasks
+- k-test: Number of classes in validation tasks
+- q-train: Query samples per class for training tasks
+- q-test: Query samples per class for validation tasks
