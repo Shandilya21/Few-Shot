@@ -1,5 +1,6 @@
 """
 Implementation of fashionNet results of Snell et al Prototypical networks.
+
 """
 import sys
 sys.path.append('../')
@@ -24,7 +25,7 @@ torch.backends.cudnn.benchmark = True
 # Parameters #
 ##############
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset')
+parser.add_argument('--dataset', default='fashionNet')
 parser.add_argument('--distance', default='l2')
 parser.add_argument('--n-train', default=1, type=int)
 parser.add_argument('--n-test', default=1, type=int)
@@ -34,8 +35,8 @@ parser.add_argument('--q-train', default=5, type=int)
 parser.add_argument('--q-test', default=1, type=int)
 args = parser.parse_args()
 
-evaluation_episodes = 1000
-episodes_per_epoch = 100
+evaluation_episodes = 100
+episodes_per_epoch = 10
 
 if args.dataset == 'fashionNet':
 	n_epochs = 50
@@ -66,12 +67,11 @@ evaluation_taskloader = DataLoader(
     num_workers=4
 )
 
-
 #########
 # Model #
 #########
 model = get_few_shot_encoder(num_input_channels)
-model.to(device, dtype=torch.double)
+model.to(device, dtype=torch.float)
 
 
 ############
