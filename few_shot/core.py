@@ -7,6 +7,7 @@ import torch
 from few_shot.metrics import categorical_accuracy
 from few_shot.callbacks import Callback
 
+
 class NShotTaskSampler(Sampler):
     def __init__(self,
                  dataset: torch.utils.data.Dataset,
@@ -32,7 +33,7 @@ class NShotTaskSampler(Sampler):
             q_queries: int. Number query samples for each class in the n-shot classification tasks.
             num_tasks: Number of n-shot tasks to group into a single batch
             fixed_tasks: If this argument is specified this Sampler will always generate tasks from
-                the specified classes
+            the specified classes
         """
         super(NShotTaskSampler, self).__init__(dataset)
         self.episodes_per_epoch = episodes_per_epoch
@@ -41,6 +42,7 @@ class NShotTaskSampler(Sampler):
             raise ValueError('num_tasks must be > 1.')
 
         self.num_tasks = num_tasks
+
         # TODO: Raise errors if initialise badly
         self.k = k
         self.n = n
@@ -59,7 +61,7 @@ class NShotTaskSampler(Sampler):
             for task in range(self.num_tasks):
                 if self.fixed_tasks is None:
                     # Get random classes
-                    episode_classes = np.random.choice(self.dataset.df['class_id'].unique(), size=self.k, replace=False)
+                    episode_classes = np.random.choice(self.dataset.df['class_id'].unique(), size=self.k, replace=False) 
                 else:
                     # Loop through classes in fixed_tasks
                     episode_classes = self.fixed_tasks[self.i_task % len(self.fixed_tasks)]
@@ -70,19 +72,25 @@ class NShotTaskSampler(Sampler):
                 support_k = {k: None for k in episode_classes}
                 for k in episode_classes:
                     # Select support examples
-                    support = df[df['class_id'] == k].sample(self.n)
+                    support = df[df['class_id'] == k].sample(self.n) 
                     support_k[k] = support
 
                     for i, s in support.iterrows():
                         batch.append(s['id'])
-
+                
+                query_k = {k: None for k in episode_classes}
                 for k in episode_classes:
-                    query = df[(df['class_id'] == k) & (~df['id'].isin(support_k[k]['id']))].sample(self.q)
+                    if len(df[(df['class_id'] == k)]) - self.n > self.q:
+                        query = df[(df['class_id'] == k) & (~df['id'].isin(support_k[k]['id']))].sample(self.q)
+                    else:
+                        query = df[(df['class_id'] == k) & (~df['id'].isin(support_k[k]['id']))].sample(len(df[(df['class_id'] == k)])- self.n)
+
+                    query_k[k] = query
+
                     for i, q in query.iterrows():
                         batch.append(q['id'])
 
             yield np.stack(batch)
-
 
 class EvaluateFewShot(Callback):
     """Evaluate a network on  an n-shot, k-way classification tasks after every epoch.
@@ -196,5 +204,3 @@ def create_nshot_task_label(k: int, q: int) -> torch.Tensor:
     """
     y = torch.arange(0, k, 1 / q).long()
     return y
-
-batch_sampler = NShotTaskSampler(evaluation, 100, 1, 5, 1)
