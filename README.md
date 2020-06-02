@@ -75,7 +75,15 @@ Download Data from the Link, and put inside data folder. Extract the zip files c
 
 Edit DATA_PATH in config.py and replace with the location where you stored the fashionNet dataset.
 
-##### Data Preperations for fashionNet Datasset
+#### Data Preperations for fashionNet Datasset
+
+###### Data Preprocessing:
+ * Preprocessing (.csv) file using basic factors such as [NaN, empty rows or columns, incomplete data], by removing or replacing or augmenting.
+ * naming convention changed to class name of each product, for e.g: images/1163.jpg --> images/"Topwear__Casual Shirts.jpg".
+ * Split the train and test using specific subcateogry classes, for eg:, cufflinks ---> background or training set, Shirts, Tie, etc ---> evaluation or
+ testing. 
+ * Move the images to the right class location as per the naming convention.
+ * Please refer code ```script/prepare_fashionNet.py``` for further details.
 
 Follow the following instructions to prepare the fashionNet dataset
 
@@ -91,7 +99,8 @@ DATA_PATH/
         images_evaluation/
 
 ```
-If you want to reproduce the results on fashionNet DataSet, use the preprocessed data. [(Download)](https://drive.google.com/open?id=1QcggrlCX5H7Q_FfXjko8rrlbVh1CtL8P) it from here and extract it inside **DATA_PATH/fashionNet/** folder.
+
+If you want to reproduce the results on fashionNet DataSet, use the preprocessed data. [(Download)](https://drive.google.com/open?id=1QcggrlCX5H7Q_FfXjko8rrlbVh1CtL8P) the files and place inside ```DATA_PATH/fashionNet/```.
 
 ## Prototypical Networks
 
@@ -108,3 +117,7 @@ Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks
 - q-test: Query samples per class for validation tasks
 
 In the main paper of Prototypical network, the author present strong arguments of euclidean distance over cosine distance which also represents the class mean of prototypical representations which we reciprocate in the experiments.
+
+#### Models:
+* Sequential Model (Batch_size X channels X height X width)
+* pretrained ResNet152 (test for Prototypical networks)
