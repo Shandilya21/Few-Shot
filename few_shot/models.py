@@ -3,7 +3,7 @@ import numpy as np
 import torch.nn.functional as F
 import torch
 from typing import Dict
-
+import torchvision
 
 ##########
 # Layers #
@@ -18,10 +18,8 @@ class Flatten(nn.Module):
     def forward(self, input):
         return input.view(input.size(0), -1)
 
-
 class GlobalMaxPool1d(nn.Module):
     """Performs global max pooling over the entire length of a batched 1D tensor
-
     # Arguments
         input: Input tensor
     """
@@ -38,10 +36,8 @@ class GlobalAvgPool2d(nn.Module):
     def forward(self, input):
         return nn.functional.avg_pool2d(input, kernel_size=input.size()[2:]).view(-1, input.size(1))
 
-
 def conv_block(in_channels: int, out_channels: int) -> nn.Module:
     """Returns a Module that performs 3x3 convolution, ReLu activation, 2x2 max pooling.
-
     # Arguments
         in_channels:
         out_channels:
@@ -75,12 +71,12 @@ def functional_conv_block(x: torch.Tensor, weights: torch.Tensor, biases: torch.
 ##########
 # Models #
 ##########
+
 def get_few_shot_encoder(num_input_channels=1) -> nn.Module:
     """Creates a few shot encoder as used in Matching and Prototypical Networks
 
     # Arguments:
-        num_input_channels: Number of color channels the model expects input data to contain. Omniglot = 1,
-            miniImageNet = 3
+        num_input_channels: Number of color channels the model expects input data to contain. fashionNet = 3
     """
     return nn.Sequential(
         conv_block(num_input_channels, 64),
@@ -90,6 +86,12 @@ def get_few_shot_encoder(num_input_channels=1) -> nn.Module:
         Flatten(),
     )
 
+def resnet_pretrained(num_input_channels=1) -> nn.Module:
+    """Creates a ResNet pretrained metwork as Prototypical Networks
+    """
+    model = torchvision.models.resnet152(pretrained=True)
+    modules = list(model.children())[:-2]
+    return nn.Sequential(*modules)
 
 class FewShotClassifier(nn.Module):
     def __init__(self, num_input_channels: int, k_way: int, final_layer_size: int = 64):
