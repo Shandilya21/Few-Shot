@@ -4,13 +4,13 @@ from torch.utils.data import Dataset
 import torch
 from PIL import Image
 from torchvision import transforms
+import skimage
 from skimage import io
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
 import os
 from config import DATA_PATH
-
 
 class fashionNet(Dataset):
     def __init__(self, subset):
@@ -39,15 +39,15 @@ class fashionNet(Dataset):
 
         # Setup transforms
         self.transform = transforms.Compose([
-            transforms.CenterCrop(96),
-            transforms.Resize(32),
+            transforms.CenterCrop(56),
+            transforms.Resize(28),
             transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                 std=[0.229, 0.224, 0.225])
+            transforms.Normalize(mean=[0.485, 0.45, 0.421],
+                                 std=[0.5, 0.5, 0.5])
         ])
 
     def __getitem__(self, item):
-        instance = Image.open(self.datasetid_to_filepath[item])
+        instance = Image.open(self.datasetid_to_filepath[item]).convert('RGB')
         instance = self.transform(instance)
         label = self.datasetid_to_class_id[item]
         return instance, label
@@ -75,7 +75,7 @@ class fashionNet(Dataset):
         subset_len = 0
         for root, folders, files in os.walk(DATA_PATH + '/fashionNet/images_{}/'.format(subset)):
             subset_len += len([f for f in files if f.endswith('.jpg')])
-
+        
         progress_bar = tqdm(total=subset_len)
         for root, folders, files in os.walk(DATA_PATH + '/fashionNet/images_{}/'.format(subset)):
             if len(files) == 0:
