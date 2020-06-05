@@ -83,8 +83,7 @@ class NShotTaskSampler(Sampler):
                     if len(df[(df['class_id'] == k)]) - self.n > self.q:
                         query = df[(df['class_id'] == k) & (~df['id'].isin(support_k[k]['id']))].sample(self.q)
                     else:
-                        query = df[(df['class_id'] == k) & (~df['id'].isin(support_k[k]['id']))].sample(len(df[(df['class_id'] == k)])- self.n)
-
+                        query = df[(df['class_id'] == k) & (~df['id'].isin(support_k[k]['id']))].sample(len(df[(df['class_id'] == k)]) - self.n)
                     query_k[k] = query
 
                     for i, q in query.iterrows():
@@ -103,7 +102,6 @@ class EvaluateFewShot(Callback):
         k_way: int. Number of classes in the n-shot classification tasks.
         q_queries: int. Number query samples for each class in the n-shot classification tasks.
         task_loader: Instance of NShotWrapper class
-        prepare_batch: function. The preprocessing function to apply to samples from the dataset.
         prefix: str. Prefix to identify dataset.
     """
 
@@ -114,7 +112,7 @@ class EvaluateFewShot(Callback):
                  k_way: int,
                  q_queries: int,
                  taskloader: torch.utils.data.DataLoader,
-                 prepare_batch: Callable,
+                 prepare_batch:Callable,
                  prefix: str = 'val_',
                  **kwargs):
         super(EvaluateFewShot, self).__init__()
@@ -123,8 +121,8 @@ class EvaluateFewShot(Callback):
         self.n_shot = n_shot
         self.k_way = k_way
         self.q_queries = q_queries
-        self.taskloader = taskloader
-        self.prepare_batch = prepare_batch
+        self.taskloader = taskloader,
+        self.prepare_batch= prepare_batch,
         self.prefix = prefix
         self.kwargs = kwargs
         self.metric_name = '{}{}-shot_{}-way_acc'.format(self.prefix, self.n_shot, self.k_way)
@@ -138,7 +136,7 @@ class EvaluateFewShot(Callback):
         seen = 0
         totals = {'loss': 0, self.metric_name: 0}
         for batch_index, batch in enumerate(self.taskloader):
-            x, y = self.prepare_batch(batch)
+            x, y = prepare_batch(batch)
 
             loss, y_pred = self.eval_fn(
                 self.model,

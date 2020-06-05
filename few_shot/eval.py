@@ -6,8 +6,8 @@ from torch.utils.data import DataLoader
 from typing import Callable, List, Union
 from few_shot.metrics import NAMED_METRICS
 
-def evaluate(model: Module, dataloader: DataLoader, prepare_batch: Callable, metrics: List[Union[str, Callable]],
-             loss_fn: Callable = None, prefix: str = 'val_', suffix: str = ''):
+def evaluate(model: Module, dataloader: DataLoader, metrics: List[Union[str, Callable]],
+             prepare_batch: Callable, loss_fn: Callable = None, prefix: str = 'val_', suffix: str = ''):
     """Evaluate a model on one or more metrics on a particular dataset
 
     # Arguments

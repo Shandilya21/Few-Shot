@@ -9,10 +9,8 @@ from torch.optim import Optimizer
 from torch.nn import Module
 from torch.utils.data import DataLoader
 from typing import Callable, List, Union
-
 from few_shot.callbacks import DefaultCallback, ProgressBarLogger, CallbackList, Callback
 from few_shot.metrics import NAMED_METRICS
-
 
 def gradient_step(model: Module, optimiser: Optimizer, loss_fn: Callable, x: torch.Tensor, y: torch.Tensor, **kwargs):
     """Takes a single gradient step.
@@ -54,7 +52,6 @@ def batch_metrics(model: Module, y_pred: torch.Tensor, y: torch.Tensor, metrics:
 
     return batch_logs
 
-
 def fit(model: Module, optimiser: Optimizer, loss_fn: Callable, epochs: int, dataloader: DataLoader,
         prepare_batch: Callable, metrics: List[Union[str, Callable]] = None, callbacks: List[Callback] = None,
         verbose: bool =True, fit_function: Callable = gradient_step, fit_function_kwargs: dict = {}):
@@ -70,7 +67,6 @@ def fit(model: Module, optimiser: Optimizer, loss_fn: Callable, epochs: int, dat
         loss_fn: Loss function to calculate between predictions and outputs
         epochs: Number of epochs of fitting to be performed
         dataloader: `torch.DataLoader` instance to fit the model to
-        prepare_batch: Callable to perform any desired preprocessing
         metrics: Optional list of metrics to evaluate the model with
         callbacks: Additional functionality to incorporate into training such as logging metrics to csv, model
             checkpointing, learning rate scheduling etc... See voicemap.callbacks for more.
@@ -83,7 +79,7 @@ def fit(model: Module, optimiser: Optimizer, loss_fn: Callable, epochs: int, dat
     # Determine number of samples:
     num_batches = len(dataloader)
     batch_size = dataloader.batch_size
-
+    
     callbacks = CallbackList([DefaultCallback(), ] + (callbacks or []) + [ProgressBarLogger(), ])
     callbacks.set_model(model)
     callbacks.set_params({
@@ -91,7 +87,7 @@ def fit(model: Module, optimiser: Optimizer, loss_fn: Callable, epochs: int, dat
         'batch_size': batch_size,
         'verbose': verbose,
         'metrics': (metrics or []),
-        'prepare_batch': prepare_batch,
+        'prepare_batch':prepare_batch,
         'loss_fn': loss_fn,
         'optimiser': optimiser
     })
@@ -106,7 +102,7 @@ def fit(model: Module, optimiser: Optimizer, loss_fn: Callable, epochs: int, dat
 
         epoch_logs = {}
         for batch_index, batch in enumerate(dataloader):
-            batch_logs = dict(batch=batch_index, size=(batch_size or 1))
+            batch_logs = dict(batch=batch_index, size=64)
 
             callbacks.on_batch_begin(batch_index, batch_logs)
 

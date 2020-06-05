@@ -64,6 +64,7 @@ def pairwise_distances(x: torch.Tensor,
                 y.unsqueeze(0).expand(n_x, n_y, -1)
         ).pow(2).sum(dim=2)
         return distances
+        
     elif matching_fn == 'cosine':
         normalised_x = x / (x.pow(2).sum(dim=1, keepdim=True).sqrt() + EPSILON)
         normalised_y = y / (y.pow(2).sum(dim=1, keepdim=True).sqrt() + EPSILON)

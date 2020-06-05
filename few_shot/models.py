@@ -71,12 +71,10 @@ def functional_conv_block(x: torch.Tensor, weights: torch.Tensor, biases: torch.
 ##########
 # Models #
 ##########
-
 def get_few_shot_encoder(num_input_channels=1) -> nn.Module:
     """Creates a few shot encoder as used in Matching and Prototypical Networks
-
-    # Arguments:
-        num_input_channels: Number of color channels the model expects input data to contain. fashionNet = 3
+    # Arguments: 
+            num_input_channels: Number of color channels the model expects input data to contain. fashionNet = 3
     """
     return nn.Sequential(
         conv_block(num_input_channels, 64),
