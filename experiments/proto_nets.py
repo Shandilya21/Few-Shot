@@ -8,7 +8,7 @@ from torch.optim import Adam
 from torch.utils.data import DataLoader
 import argparse
 from few_shot.datasets import fashionNet
-from few_shot.models import get_few_shot_encoder
+from few_shot.models import get_few_shot_encoder, resnet_pretrained
 from few_shot.core import NShotTaskSampler, EvaluateFewShot, prepare_nshot_task
 from few_shot.proto import proto_net_episode
 from few_shot.train import fit
@@ -26,7 +26,7 @@ torch.backends.cudnn.benchmark = True
 ##############
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', default='fashionNet')
-parser.add_argument('--distance', default='l2')
+parser.add_argument('--distance', default='cosine')
 parser.add_argument('--n-train', default=1, type=int)
 parser.add_argument('--n-test', default=1, type=int)
 parser.add_argument('--k-train', default=60, type=int)
@@ -58,7 +58,7 @@ background = dataset_class('background')
 background_taskloader = DataLoader(
     background,
     batch_sampler=NShotTaskSampler(background, episodes_per_epoch, args.n_train, args.k_train, args.q_train),
-    num_workers=4
+    num_workers=4   
 )
 evaluation = dataset_class('evaluation')
 evaluation_taskloader = DataLoader(
@@ -71,8 +71,7 @@ evaluation_taskloader = DataLoader(
 # Model #
 #########
 model = get_few_shot_encoder(num_input_channels)
-model.to(device, dtype=torch.float)
-
+model.to(device, dtype=torch.double)
 
 ############
 # Training #
@@ -88,7 +87,6 @@ def lr_schedule(epoch, lr):
         return lr / 2
     else:
         return lr
-
 
 callbacks = [
     EvaluateFewShot(
