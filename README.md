@@ -130,3 +130,6 @@ Run the command to run the experiments for protonets.
 bash chmod +x experiments/run.sh
 ```
 
+Acknowledgment: 
+[(oscarknagg)](https://github.com/oscarknagg/few-shot)
+Thanks for sharing the code and supporting references.
