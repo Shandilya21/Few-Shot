@@ -1,6 +1,5 @@
 #!/bin/sh
 read -p "Is train: (1 - Yes, 0 - no): " IS_TRAIN
-read -p "Please enter distance metric: (1 - cosine, 0 - l2): " distance
 echo "Setting Training network ....,"
 
 echo "Start with 1 shot variant"
