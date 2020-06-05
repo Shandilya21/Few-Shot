@@ -129,7 +129,4 @@ Run the command to run the experiments for protonets.
 ```
 bash chmod +x experiments/running.sh
 ```
-**Note: Please change the hparams accordingly.** 
-
-
 
