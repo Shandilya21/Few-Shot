@@ -127,6 +127,6 @@ In the main paper of Prototypical network, the author present strong arguments o
 
 Run the command to run the experiments for protonets. 
 ```
-bash chmod +x experiments/running.sh
+bash chmod +x experiments/run.sh
 ```
 
