@@ -84,7 +84,7 @@ Edit DATA_PATH in config.py and replace with the location where you stored the f
  * Move the images to the right location
  * Please refer code ```script/prepare_fashionNet.py``` for further details.
 
-```Meta Training Set or testing set class distribution may have changed if we add more classes into it. The Proto-nets paper also notes using a larger “way”, i.e. more classes during training may help. you can test with more meta data selecting from articleType (.csv) to ```data/fashionNet/Meta```.
+Meta Training Set or testing set class distribution may have changed if we add more classes into it. The Proto-nets paper also notes using a larger “way”, i.e. more classes during training may help. you can test with more meta data selecting from articleType (.csv) to ```data/fashionNet/Meta```.
 
 Follow the following instructions to prepare the fashionNet dataset
 
@@ -106,12 +106,12 @@ If you want to reproduce the results on fashionNet DataSet, use the preprocessed
 ###### (ii) DataLoader or n_shot_preprocessing
 * raw_images ('RGB') of ~ [60 X 80] ------> CenterCrop(56), and Resize to (28, 28).
 * class_name: image_name, for example: let image name is ```Topwear__Casual Shirts.jpg``` ---> [Topwear (subCategory) + Casual Shirts (articleType)] is a class name.
-* In ```core.py/prepare_n_shot```, you may find the n shot task label. return tensor [q*K, ]. Nshotsampler for training and evaluation is wrapper Sampler subclass that generates batches of n-shot, k-way, q-query tasks. the wrapper function return the batch tensors of support and query sets. The support and query set are disjoint i.e. do not contain overlapping samples.
+* In ```core.py/prepare_n_shot```, you may find the n shot task label. return tensor [q_queries * K_shots, ]. Nshotsampler for training and evaluation is wrapper Sampler subclass that generates batches of n-shot, k-way, q-query tasks. the wrapper function return the batch tensors of support and query sets. The support and query set are disjoint i.e. do not contain overlapping samples.
 
 
 ## 4. Prototypical Networks
 
-Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks. Refer to Descriptions section in detailed.
+Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks. (Refer the Theory section for details).
 
 **Arguments**
 - dataset: {'fashionNet'}.
@@ -130,6 +130,28 @@ Run the command to run the experiments for protonets.
 bash chmod +x experiments/run.sh
 ```
 
-Acknowledgment: 
-[(oscarknagg)](https://github.com/oscarknagg/few-shot)
-Thanks for sharing the code and supporting references.
+#### Future Work and Approaches
+##### 1. Multimodal Few Shot Classification
+
+We can extend the given problem in many possible ways, however, multimodal few shot classification one of the potential approaches that have an active research in dialogue, and question answering systems and shows significant results. A multi-modal approach facilitates bridging the information gap by means of meaningful joint embeddings. Similar previous research includes [(Chen Xing et.al)](https://papers.nips.cc/paper/8731-adaptive-cross-modal-few-shot-learning.pdf), [(Frederik Pahde et.al)](https://openreview.net/pdf?id=HJB8ntJPG) open a new frontier of research in the respective areas. In given problem we extend to use ```productDisplay``` (refer dataset-table), which have unique description for every fashion products as intutive inference for the images to build an effective classifier with less number of samples for each classes. We can build a end to end multimodal classifier, which has both the modalities (text and images) while training and only images during test time.
+
+![](https://github.com/Shandilya21/few_shot_research/raw/master/images/multimodal.png)
+
+In the above figure the product desciption has feeded with Bi-LSTM for extracting textual semantics, whereas the images features is extracted using pretrained ResNet trained on ImageNet instance. The cross attention is incorporated to attend the features of textual attributes with respect to images and vice versa. The further context is passed with fully connected layer and trained on the cross entropy loss.
+
+##### 2. MAML
+We can extend the network with the implementation of 1st and 2nd Order Meta Agnostics Meta Learning short for MAML algorithms which can use meta classes such as articleType, season, subCategory, etc to optimizes the model efficiency considering meta objective and hence improving the performance of few shot classification.
+
+<!-- CONTRIBUTING -->
+#### Contributing
+
+Contributions are what make the project such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git build -b build/newfeature`)
+3. Commit your Changes (`git commit -m 'Add some newfeature'`)
+4. Push to the Branch (`git push origin build/newfeature`)
+5. Open a Pull Request
+
+#### Acknowledgment: 
+[(oscarknagg)](https://github.com/oscarknagg/few-shot) Thanks for sharing the code and supporting references.
