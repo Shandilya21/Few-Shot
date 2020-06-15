@@ -2,7 +2,7 @@ import torch
 from torch.optim import Optimizer
 from torch.nn import Module
 from typing import Callable
-
+import pdb
 from few_shot.utils import pairwise_distances
 
 
@@ -47,12 +47,15 @@ def proto_net_episode(model: Module,
     # Samples are ordered by the NShotWrapper class as follows:
     # k lots of n support samples from a particular class
     # k lots of q query samples from those classes
-    support = embeddings[:n_shot*k_way]
-    queries = embeddings[n_shot*k_way:]
+
+    support = embeddings[:n_shot*k_way] #[n_s X 64]
+    queries = embeddings[n_shot*k_way:] #[n_f X 64] 
+    
     prototypes = compute_prototypes(support, k_way, n_shot)
 
     # Calculate squared distances between all queries and all prototypes
     # Output should have shape (q_queries * k_way, k_way) = (num_queries, k_way)
+    # distances = pairwise_distances(queries, prototypes, distance)
     distances = pairwise_distances(queries, prototypes, distance)
 
     # Calculate log p_{phi} (y = k | x)
@@ -82,7 +85,7 @@ def compute_prototypes(support: torch.Tensor, k: int, n: int) -> torch.Tensor:
         n: int. "n-shot" of the classification task
 
     # Returns
-        class_prototypes: Prototypes aka mean embeddings for each class
+        class_prototypes: class_prototypestypes aka mean embeddings for each class
     """
     # Reshape so the first dimension indexes by class then take the mean
     # along that dimension to generate the "prototypes" for each class

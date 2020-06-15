@@ -79,11 +79,9 @@ class NShotTaskSampler(Sampler):
                         batch.append(s['id'])
                 
                 query_k = {k: None for k in episode_classes}
+                
                 for k in episode_classes:
-                    if len(df[(df['class_id'] == k)]) - self.n > self.q:
-                        query = df[(df['class_id'] == k) & (~df['id'].isin(support_k[k]['id']))].sample(self.q)
-                    else:
-                        query = df[(df['class_id'] == k) & (~df['id'].isin(support_k[k]['id']))].sample(len(df[(df['class_id'] == k)]) - self.n)
+                    query = df[(df['class_id'] == k) & (~df['id'].isin(support_k[k]['id']))].sample(self.q)
                     query_k[k] = query
 
                     for i, q in query.iterrows():
@@ -93,7 +91,6 @@ class NShotTaskSampler(Sampler):
 
 class EvaluateFewShot(Callback):
     """Evaluate a network on  an n-shot, k-way classification tasks after every epoch.
-
     # Arguments
         eval_fn: Callable to perform few-shot classification. Examples include `proto_net_episode`,
             `matching_net_episode` and `meta_gradient_step` (MAML).
@@ -102,6 +99,7 @@ class EvaluateFewShot(Callback):
         k_way: int. Number of classes in the n-shot classification tasks.
         q_queries: int. Number query samples for each class in the n-shot classification tasks.
         task_loader: Instance of NShotWrapper class
+        prepare_batch: function. The preprocessing function to apply to samples from the dataset.
         prefix: str. Prefix to identify dataset.
     """
 
@@ -112,7 +110,7 @@ class EvaluateFewShot(Callback):
                  k_way: int,
                  q_queries: int,
                  taskloader: torch.utils.data.DataLoader,
-                 prepare_batch:Callable,
+                 prepare_batch: Callable,
                  prefix: str = 'val_',
                  **kwargs):
         super(EvaluateFewShot, self).__init__()
@@ -121,11 +119,11 @@ class EvaluateFewShot(Callback):
         self.n_shot = n_shot
         self.k_way = k_way
         self.q_queries = q_queries
-        self.taskloader = taskloader,
-        self.prepare_batch= prepare_batch,
+        self.taskloader = taskloader
+        self.prepare_batch = prepare_batch
         self.prefix = prefix
         self.kwargs = kwargs
-        self.metric_name = '{}{}-shot_{}-way_acc'.format(self.prefix, self.n_shot, self.k_way)
+        self.metric_name = '{}{}-shot_{}-way_acc'.format(self.prefix,self.n_shot,self.k_way)
 
     def on_train_begin(self, logs=None):
         self.loss_fn = self.params['loss_fn']
@@ -136,7 +134,7 @@ class EvaluateFewShot(Callback):
         seen = 0
         totals = {'loss': 0, self.metric_name: 0}
         for batch_index, batch in enumerate(self.taskloader):
-            x, y = prepare_batch(batch)
+            x, y = self.prepare_batch(batch)
 
             loss, y_pred = self.eval_fn(
                 self.model,
@@ -162,18 +160,15 @@ class EvaluateFewShot(Callback):
 
 def prepare_nshot_task(n: int, k: int, q: int) -> Callable:
     """Typical n-shot task preprocessing.
-
     # Arguments
         n: Number of samples for each class in the n-shot classification task
         k: Number of classes in the n-shot classification task
         q: Number of query samples for each class in the n-shot classification task
-
     # Returns
         prepare_nshot_task_: A Callable that processes a few shot tasks with specified n, k and q
     """
     def prepare_nshot_task_(batch: Tuple[torch.Tensor, torch.Tensor]) -> Tuple[torch.Tensor, torch.Tensor]:
         """Create 0-k label and move to GPU.
-
         TODO: Move to arbitrary device
         """
         x, y = batch
@@ -187,16 +182,12 @@ def prepare_nshot_task(n: int, k: int, q: int) -> Callable:
 
 def create_nshot_task_label(k: int, q: int) -> torch.Tensor:
     """Creates an n-shot task label.
-
     Label has the structure:
         [0]*q + [1]*q + ... + [k-1]*q
-
     # TODO: Test this
-
     # Arguments
         k: Number of classes in the n-shot classification task
         q: Number of query samples for each class in the n-shot classification task
-
     # Returns
         y: Label vector for n-shot task of shape [q * k, ]
     """
