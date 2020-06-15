@@ -179,8 +179,7 @@ Run `experiments/maml.py` to reproduce results using MAML Networks. (Refer the T
 |           | Order  |       |       |
 |-----------|--------|-------|-------|
 |k - ways   | 1      | 2     | 5     |
-|n - shots  | 1      | 1     | 3     |
-|------------------------------------|  
+|n - shots  | 1      | 1     | 3     | 
 |This Repo  | 1      | 95.67 | 85.65 |
 
 
