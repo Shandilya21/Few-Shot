@@ -1,5 +1,5 @@
 torch==1.1.0
-torchvision==0.3.0
+torchvision==0.2.0
 tqdm==4.28.1
 scikit-image==0.15.0
 scikit-learn==0.21.3
@@ -25,12 +25,7 @@ Keras-Applications==1.0.8
 Keras-Preprocessing==1.0.9
 imageio==2.6.1
 imagesize==1.2.0
-tensorflow-gpu==1.15.2
+tensorflow-gpu==1.14.0
 tensorboard==1.15.0
 six==1.12.0
 scipy==1.2.1
-
-
-
-
-

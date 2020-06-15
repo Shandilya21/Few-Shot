@@ -6,7 +6,7 @@ sys.path.append('../')
 from torch.utils.data import DataLoader
 from torch import nn
 import argparse
-from few_shot.datasets import OmniglotDataset, MiniImageNet
+from few_shot.datasets import fashionNet
 from few_shot.core import NShotTaskSampler, create_nshot_task_label, EvaluateFewShot
 from few_shot.maml import meta_gradient_step
 from few_shot.models import FewShotClassifier
@@ -77,7 +77,7 @@ evaluation_taskloader = DataLoader(
 # Training #
 ############
 print('Training MAML on {}...'.format(args.dataset))
-meta_model = FewShotClassifier(num_input_channels, args.k, fc_layer_size).to(device, dtype=torch.double)
+meta_model = FewShotClassifier(num_input_channels, args.k, 64).to(device, dtype=torch.double)
 meta_optimiser = torch.optim.Adam(meta_model.parameters(), lr=args.meta_lr)
 loss_fn = nn.CrossEntropyLoss().to(device)
 
@@ -114,7 +114,7 @@ callbacks = [
         order=args.order,
     ),
     ModelCheckpoint(
-        filepath=PATH + '/models/maml/{}.pth',.format(param_str)
+        filepath=PATH + '/models/maml/{}.pth'.format(param_str),
         monitor='val_{}-shot_{}-way_acc'.format(args.n,args.k)
     ),
     ReduceLROnPlateau(patience=10, factor=0.5, monitor='val_loss'),
