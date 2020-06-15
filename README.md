@@ -28,11 +28,21 @@ Consider a learning task T , FSL deals with a data set D = {Dtrain,Dtest} consis
 
 ## 2. Theory
 ### Prototypical Networks
-To achieve optimal few shot performance [(Snell et.al)](https://arxiv.org/pdf/1703.05175.pdf) apply compelling inductive bias in class prototype form. The assumption made to consider an embedding in which samples from each class cluster around the **prototypical representation** which is nothing but the mean of each sample. However, In the n-shot classification problem, where n > 1, it performed by taking a class to the closest prototype. With this, the paper, has a strong theoretical proof on using euclidean distance over cosine distance which also represents the class mean of prototypical representations. Prototypical Networks also work for **Zero-Shot Learning**, which can learn from rich attributes or natural language descriptions. For eg. "color", "master category", "season", and "product display name", etc.
 
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/proto_nets_diagram.png)
 
-## 3. Data Set
+
+To achieve optimal few shot performance [(Snell et.al)](https://arxiv.org/pdf/1703.05175.pdf) apply compelling inductive bias in class prototype form. The assumption made to consider an embedding in which samples from each class cluster around the **prototypical representation** which is nothing but the mean of each sample. However, In the n-shot classification problem, where n > 1, it performed by taking a class to the closest prototype. With this, the paper, has a strong theoretical proof on using euclidean distance over cosine distance which also represents the class mean of prototypical representations. Prototypical Networks also work for **Zero-Shot Learning**, which can learn from rich attributes or natural language descriptions. For eg. "color", "master category", "season", and "product display name", etc.
+
+
+### Meta Agnostic Meta Learning (MAML)
+
+![](https://github.com/Shandilya21/few_shot_research/raw/master/images/maml_diagram.png)
+
+
+The objective of meta-learning algorithms is to optimize meta parameters. Precisely, we have algorithms that access to the training loss and some meta parameters and output some optimal or learned parameters. Likewise, Meta Agnostic Meta-Learning short for MAML is an optimization algorithm compatible with the model that learns through gradient descent. The meta parameters was a point of initialization for the SGD algorithms shared between all the independent task. Since the SGD update is differentiable, one can compute the gradients concerning meta parameters simply through backpropagation.
+
+## 1. Data Set
 
 Download the datasets from here (small-version) [(Download)](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full-version) [(Download)](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1) Download any version of the dataset as per your requirement. Preferable to perform test how models works on smaller version and then build on full version of the dataset.
 
@@ -57,36 +67,23 @@ Download the datasets from here (small-version) [(Download)](https://www.kaggle.
 |1455| Girl  | Apparel       | TopWeat    | Tshirt     | Grey	   | Summer| Casual| Gini Jony Girls Knit Top  |
 
 
-## 3.1 Experiment Setup
-### 3.1.1. Requirements
-
-Use virtualenv (preferable). you can find link for virtualenv setup as [(virtualenv1)](https://stackoverflow.com/questions/52816156/how-to-create-virtual-environment-for-python-3-7-0) and [(virtualenv2)](https://stackoverflow.com/questions/43069780/how-to-create-virtual-env-with-python3/43070301).
-
-Clone the Repository
-```
-git clone https://github.com/Shandilya21/few_shot_research.git
-```
-Listed in "requirements.txt" Install neccesssary supporting packages or libraries for reproducing similar results.
-
-```
-pip install -r requirements.txt
-```
-Download Data from the Link, and put inside data folder. Extract the zip files contains Images, and csv file for fashion product items descriptions or other details. refer to **Data Descriptions" section for an overview.
-
-Edit DATA_PATH in config.py and replace with the location where you stored the fashionNet dataset.
-
-#### 3.1.2 Data Preperations for fashionNet Dataset
+#### 1.2 Data Preperations for fashionNet Dataset
 
 ###### (i). Data Preprocessing Approach:
  * Preprocess (.csv) file with basic utils such as [NaN, empty rows or columns, incomplete data], eithier by removing or replacing or augmenting.
- * naming convention has changed to class name of each product, for e.g: images/1163.jpg --> images/"Topwear__Casual Shirts.jpg" for distributed the meta training and testing set.
- * Split the Meta training and testing on the basis subcateogry classes, for eg:, cufflinks ---> background classes, Shirts, Tie, etc ---> evaluation classes. 
- * Move the images to the right location
- * Please refer code ```script/prepare_fashionNet.py``` for further details.
+ * naming convention has changed to class name of each product, for e.g: images/7100.jpg --> images/"Duffel Bag__7100.jpg".
+ * Split the Meta training and testing on the basis articleType, for eg:, cufflinks ---> background classes, Shirts, Tie, etc ---> evaluation classes. 
+ * Moved the images to the right location i.e, to the correct classes.
+ * Please refer code ```script/prepare_fashionNet.py``` in details.
 
-Meta Training Set or testing set class distribution may have changed if we add more classes into it. The Proto-nets paper also notes using a larger “way”, i.e. more classes during training may help. you can test with more meta data selecting from articleType (.csv) to ```data/fashionNet/Meta```.
+How we split the background (support) and (query) samples are based on the set of specific classes which is under the **data/fashionNet/Meta**  The Proto-nets paper also notes using a larger “way”, i.e. more classes during training may help for better performance.
 
-Follow the following instructions to prepare the fashionNet dataset
+###### (ii) DataLoader or n_shot_preprocessing
+* raw_images ('RGB') of ~ [60 X 80] ------> CenterCrop(56), and Resize to (28, 28).
+* class_name: image_name, for example: let image name is ```Duffel Bag__7100.jpg``` ---> [Casual Shirts (articleType) + (image_id)] is a class name.
+* In ```core.py/prepare_n_shot```, you may find the n shot task label. return tensor [q_queries * K_shots, ]. Nshotsampler for training and evaluation is wrapper Sampler subclass that generates batches of n-shot, k-way, q-query tasks. this wrapper function return the batch tensors of support and query sets. The support and query set are disjoint i.e. do not contain overlapping samples.
+
+Follow the below instructions to prepare the fashionNet dataset
 
 ```
 python script/prepare_fashionNet.py
@@ -98,18 +95,42 @@ DATA_PATH/
     fashionNet/
         images_background/
         images_evaluation/
+        refac_images/
+```
+images_background: contains support classes
+images_evaluation: contains query classes
+refac_images : Images after renamed (based on class name + image_id)
+
+##### Checkpoints (.pth) and Preprocessed Data Set
+If you want to reproduce the results on fashionNet DataSet, use the preprocessed data and Checkpoints.
+[***(Download)***](https://drive.google.com/drive/folders/1jTHGsISd44RkwBcWP-LTRhGbfYbBpBZG?usp=sharing) the ```data.tar.gz``` files and place inside ```DATA_PATH/fashionNet/```. Extract the files and run the code.
+
+
+## 2 Experiment Setup
+### 2.1 Requirements
+
+Use virtualenv (preferable).
+Clone the Repository
+```
+git clone https://github.com/Shandilya21/few_shot_research.git
+```
+Listed in "requirements.txt" Install neccesssary supporting libraries for reproducing results.
+
+```
+pip install -r requirements.txt
+```
+Download Data from the Link, and put inside data folder refer ```data/fashionNet/README.md``` in details. Extract the zip files contains Images, and csv file for fashion product items descriptions or other details.
+
+Edit DATA_PATH in ```config.py``` and replace with the fashionNet dataset location.
+
+Run the command to run all the experiments. 
+```
+bash chmod +x experiments/run.sh
+./run.sh
 ```
 
-If you want to reproduce the results on fashionNet DataSet, use the preprocessed data. [(Download)](https://drive.google.com/open?id=1QcggrlCX5H7Q_FfXjko8rrlbVh1CtL8P) the files and place inside ```DATA_PATH/fashionNet/```.
-
-
-###### (ii) DataLoader or n_shot_preprocessing
-* raw_images ('RGB') of ~ [60 X 80] ------> CenterCrop(56), and Resize to (28, 28).
-* class_name: image_name, for example: let image name is ```Topwear__Casual Shirts.jpg``` ---> [Topwear (subCategory) + Casual Shirts (articleType)] is a class name.
-* In ```core.py/prepare_n_shot```, you may find the n shot task label. return tensor [q_queries * K_shots, ]. Nshotsampler for training and evaluation is wrapper Sampler subclass that generates batches of n-shot, k-way, q-query tasks. the wrapper function return the batch tensors of support and query sets. The support and query set are disjoint i.e. do not contain overlapping samples.
-
-
-## 4. Prototypical Networks
+## 3. Networks
+#### 3.1 ProtoTypical Networks
 
 Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks. (Refer the Theory section for details).
 
@@ -125,13 +146,46 @@ Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks
 
 In the main paper of Prototypical network, the author present strong arguments of euclidean distance over cosine distance which also represents the class mean of prototypical representations which we reciprocate in the experiments.
 
-Run the command to run the experiments for protonets. 
-```
-bash chmod +x experiments/run.sh
-```
+|               | fashionNet
+|---------------|--------|-------|-------|
+|k - ways       | 2      | 3     | 5     |
+|n - shots      | 2      | 4     | 5     |
+|This Repo (l2) | 80.2   | 77.5  | 84.74 |
+|This Repo (Cos)| 72.5   | 73.88 | 77.68 |
 
-#### Future Work and Approaches
-##### 1. Multimodal Few Shot Classification
+
+#### 3.2 Meta Agnostic Meta Learning (MAML)
+
+Run `experiments/maml.py` to reproduce results using MAML Networks. (Refer the Theory section for details).
+
+**Arguments**
+
+- dataset: {'omniglot', 'miniImageNet'}. Whether to use the Omniglot or miniImagenet dataset
+- distance: {'l2', 'cosine'}. Which distance metric to use
+- n: Support samples per class for few-shot tasks
+- k: Number of classes in training tasks
+- q: Query samples per class for training tasks
+- inner-train-steps: Number of inner-loop updates to perform on training tasks
+- inner-val-steps: Number of inner-loop updates to perform on validation tasks
+- inner-lr: Learning rate to use for inner-loop updates
+- meta-lr: Learning rate to use when updating the meta-learner weights
+- meta-batch-size: Number of tasks per meta-batch
+- order: Whether to use 1st or 2nd order MAML
+- epochs: Number of training epochs
+- epoch-len: Meta-batches per epoch
+- eval-batches: Number of meta-batches to use when evaluating the model after each epoch
+
+
+|           | Order  |   fashionNet
+|-----------|--------|-------|-------|
+|k - ways   | 1      | 2     | 5     |
+|n - shots  | 1      | 1     | 3     |
+|------------------------------------|  
+|This Repo  | 1      | 95.67 | 85.65 |
+
+
+#### 4. Future Work and Approaches
+##### 4.1 Multimodal Few Shot Classification
 
 We can extend the given problem in many possible ways, however, multimodal few shot classification one of the potential approaches that have an active research in dialogue, and question answering systems and shows significant results. A multi-modal approach facilitates bridging the information gap by means of meaningful joint embeddings. Similar previous research includes [(Chen Xing et.al)](https://papers.nips.cc/paper/8731-adaptive-cross-modal-few-shot-learning.pdf), [(Frederik Pahde et.al)](https://openreview.net/pdf?id=HJB8ntJPG) open a new frontier of research in the respective areas. In given problem we extend to use ```productDisplay``` (refer dataset-table), which have unique description for every fashion products as intutive inference for the images to build an effective classifier with less number of samples for each classes. We can build a end to end multimodal classifier, which has both the modalities (text and images) while training and only images during test time.
 
@@ -139,8 +193,8 @@ We can extend the given problem in many possible ways, however, multimodal few s
 
 In the above figure the product desciption has feeded with Bi-LSTM for extracting textual semantics, whereas the images features is extracted using pretrained ResNet trained on ImageNet instance. The cross attention is incorporated to attend the features of textual attributes with respect to images and vice versa. The further context is passed with fully connected layer and trained on the cross entropy loss.
 
-##### 2. MAML
-We can extend the network with the implementation of 1st and 2nd Order Meta Agnostics Meta Learning short for MAML algorithms which can use meta classes such as articleType, season, subCategory, etc to optimizes the model efficiency considering meta objective and hence improving the performance of few shot classification.
+##### 4.2 Zero Shot Learning
+We can extend the module and develop the zero shot learning approach for the task of image classofication on fashion dataset. Zero-Shot Learning is the  type of learning that able to predict classes that has not been seen while training the model. It resembles our ability to generalize and identify new things without explicit supervision.
 
 <!-- CONTRIBUTING -->
 #### Contributing
@@ -154,4 +208,4 @@ Contributions are what make the project such an amazing place to be learn, inspi
 5. Open a Pull Request
 
 #### Acknowledgment: 
-[(oscarknagg)](https://github.com/oscarknagg/few-shot) Thanks for sharing the code and supporting references.
+[(oscarknagg)](https://github.com/oscarknagg/few-shot) I would like to thanks for sharing the code and supporting references.
