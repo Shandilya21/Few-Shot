@@ -146,7 +146,7 @@ Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks
 
 In the main paper of Prototypical network, the author present strong arguments of euclidean distance over cosine distance which also represents the class mean of prototypical representations which we reciprocate in the experiments.
 
-|               |        |       |       |
+|               |Fashion |       |       |
 |---------------|--------|-------|-------|
 |k - ways       | 2      | 3     | 5     |
 |n - shots      | 2      | 4     | 5     |
@@ -176,11 +176,11 @@ Run `experiments/maml.py` to reproduce results using MAML Networks. (Refer the T
 - eval-batches: Number of meta-batches to use when evaluating the model after each epoch
 
 
-|           | Order  |       |       |
-|-----------|--------|-------|-------|
-|k - ways   | 1      | 2     | 5     |
-|n - shots  | 1      | 1     | 3     | 
-|This Repo  | 1      | 95.67 | 85.65 |
+|           | Order  |Fashion|       |       |
+|-----------|--------|-------|-------|-------|
+|k - ways   |        | 2     | 5     | 5     |
+|n - shots  |        | 1     | 3     | 5     |
+|This Repo  | 1      | 92.67 | 90.65 | 93.23 |
 
 
 #### 4. Future Work and Approaches
