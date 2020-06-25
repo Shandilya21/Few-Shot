@@ -1,6 +1,6 @@
-## Few Short, Zero Shot Learning Research
+## Few Short, Zero Shot and Meta Learning Research
 
-The objective of the repository is working on a few shot, and zero-shot learning problems and also to write readable, clean, and tested code. This includes the implementation of a few-shot image classification problems, using algorithms such as Prototypical Networks, etc.
+The objective of the repository is working on a few shot, zero-shot, and meta learning problems and also to write readable, clean, and tested code. Below is the implementation of a few-shot image classification problems.
 
 ## Important Blogs and Paper
 
@@ -44,11 +44,11 @@ The objective of meta-learning algorithms is to optimize meta parameters. Precis
 
 ## 1. Data Set
 
-Download the datasets (small-version) [***(Download)***](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full-version) [***(Download)***](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1) Download any version of the dataset as per your requirement.
+Download the datasets (small-version) [***(Download)***](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full-version) [***(Download)***](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1). 
 
-**DataSet Description**
+**Dataset Description**
 
-- ```id```: Images id as in images_folder/.
+- ```id```: Images id as in images_folder.
 - ```gender```: Gender wise fashion items (M/W), etc. 
 - ```masterCategory```: Categories contains type of fashion items such as Apparel, Accessories, etc.
 - ```SubCategory```: Categories contains the specific fashion item category collections, such as Footwear, Watch etc.  
@@ -67,21 +67,35 @@ Download the datasets (small-version) [***(Download)***](https://www.kaggle.com/
 |1455| Girl  | Apparel       | TopWeat    | Tshirt     | Grey	   | Summer| Casual| Gini Jony Girls Knit Top  |
 
 
-#### 1.2 Data Preperations for fashionNet Dataset
+## 2 Experiment Setup
+### 2.1 Requirements
+
+```Language: Python 3.5``` <br />
+Use virtualenv (preferable). <br />
+Clone the Repository
+```
+git clone https://github.com/Shandilya21/few_shot_research.git
+```
+
+Edit DATA_PATH in ```config.py``` and replace with appropriate __dataset_path__. <br />
+Install all supporting libraries and packages in "requirements.txt".
+```
+pip install -r requirements.txt
+```
+Download the data, and place inside data folder. Extract the zip files to continue.
+
+#### 2.2 Data Preperations for fashionNet Dataset
 
 ###### (i). Data Preprocessing Approach:
- * Preprocess (.csv) file with basic utils such as [NaN, empty rows or columns, incomplete data], eithier by removing or replacing or augmenting.
- * naming convention has changed to class name of each product, for e.g: images/7100.jpg --> images/"Duffel Bag__7100.jpg".
- * Split the Meta training and testing on the basis articleType, for eg:, cufflinks ---> background classes, Shirts, Tie, etc ---> evaluation classes. 
- * Moved the images to the right location i.e, to the correct classes.
- * Please refer code ```script/prepare_fashionNet.py``` in details.
-
-How we split the background (support) and (query) samples are based on the set of specific classes which is under the **data/fashionNet/Meta**  The Proto-nets paper also notes using a larger “way”, i.e. more classes during training may help for better performance.
+ * Preprocess (.csv) file by removing [NaN, empty rows or columns, incomplete data], eithier by removing or augmentation.
+ * Rename Images to their class name with image id, for e.g: images/7100.jpg --> images/"Duffel Bag__7100.jpg".
+ * Split the Meta training (support) and testing (query), for eg:, cufflinks ---> background classes, Shirts, Tie, etc ---> evaluation classes. 
+ * Moved the images to their respective class name folder.
+ * FOr more details, refer code ```script/prepare_fashionNet.py```.
 
 ###### (ii) DataLoader or n_shot_preprocessing
-* raw_images ('RGB') of ~ [60 X 80] ------> CenterCrop(56), and Resize to (28, 28).
-* class_name: image_name, for example: let image name is ```Duffel Bag__7100.jpg``` ---> [Casual Shirts (articleType) + (image_id)] is a class name.
-* In ```core.py/prepare_n_shot```, you may find the n shot task label. return tensor [q_queries * K_shots, ]. Nshotsampler for training and evaluation is wrapper Sampler subclass that generates batches of n-shot, k-way, q-query tasks. this wrapper function return the batch tensors of support and query sets. The support and query set are disjoint i.e. do not contain overlapping samples.
+* Images ('RGB') of ~ [60 X 80] ------> CenterCrop(56), and Resize to (28, 28).
+* In ```core.py/prepare_n_shot```, you may find the n shot task label. return tensor [q_queries * K_shots, ]. Nshotsampler is wrapper class that generates batches of n-shot, k-way, q-query tasks. Also, The support and query set are disjoint i.e. do not contain overlapping samples.
 
 Follow the below instructions to prepare the fashionNet dataset
 
@@ -98,37 +112,20 @@ DATA_PATH/
         refac_images/
 ```
 
-```images_background```: contains support classes
-```images_evaluation```: contains query classes
-```refac_images```: Images after renamed (based on class name + image_id)
-
-##### Checkpoints (.pth) and Preprocessed Data Set
-If you want to reproduce the results on fashionNet DataSet, use the preprocessed data and Checkpoints.
-[***(Download)***](https://drive.google.com/drive/folders/1jTHGsISd44RkwBcWP-LTRhGbfYbBpBZG?usp=sharing) the ```data.tar.gz``` files and place inside ```DATA_PATH/fashionNet/```. Extract the files and run the code.
+```images_background```: contains support classes <br />
+```images_evaluation```: contains query classes <br />
+```refac_images```: Images after renamed (based on class name + image_id) <br />
 
 
-## 2 Experiment Setup
-### 2.1 Requirements
-
-Use virtualenv (preferable).
-Clone the Repository
-```
-git clone https://github.com/Shandilya21/few_shot_research.git
-```
-Listed in "requirements.txt" Install neccesssary supporting libraries for reproducing results.
-
-```
-pip install -r requirements.txt
-```
-Download the Data, and place inside data folder. Extract the zip files.
-
-Edit DATA_PATH in ```config.py``` and replace with the fashionNet dataset location.
-
-Experiments
+#### Run Experiments
 ```
 bash chmod +x experiments/run.sh
 ./run.sh
 ```
+
+### Checkpoints (.pth) and Preprocessed Data Set
+To reproduce the results on fashionNet DataSet, download the preprocessed data and Checkpoints.
+[***(Download)***](https://drive.google.com/drive/folders/1jTHGsISd44RkwBcWP-LTRhGbfYbBpBZG?usp=sharing) place the files inside ```DATA_PATH/fashionNet/```. 
 
 ## 3. Networks
 #### 3.1 ProtoTypical Networks
@@ -191,7 +188,7 @@ We can extend the given problem in many possible ways, however, multimodal few s
 
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/multimodal.png)
 
-In the figure the product desciption has feeded with Bi-LSTM for extracting textual semantics, whereas the images features is extracted using pretrained ResNet. The cross attention is used to attend the features of textual attributes with respect to images and vice versa. The further context is passed with fully connected layer.
+ The cross attention is used to attend the features of textual attributes with respect to images and vice versa. The modalities features further fused using fusion technique such as MFB, MFH, etc. to build the context. The further context is passed with fully connected layer.
 
 ##### 4.2 Zero Shot Learning
 We can extend the module and develop the zero shot learning approach for the task of image classofication on fashion dataset. Zero-Shot Learning is the  type of learning that able to predict classes that has not been seen while training the model. It resembles our ability to generalize and identify new things without explicit supervision.
