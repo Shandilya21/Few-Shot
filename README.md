@@ -136,14 +136,14 @@ bash chmod +x experiments/run.sh
 ```Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks```.
 
 **Arguments**
-- dataset: {'fashionNet'}.
-- distance: {'l2', 'cosine'}. Which distance metric to use
-- n-train: Support samples per class for training tasks
-- n-test: Support samples per class for validation tasks
-- k-train: Number of classes in training tasks
-- k-test: Number of classes in validation tasks
-- q-train: Query samples per class for training tasks
-- q-test: Query samples per class for validation tasks
+- ```dataset```: {'fashionNet'}.
+- ```distance```: {'l2', 'cosine'}. Which distance metric to use
+- ```n-train```: Support samples per class for training tasks
+- ```n-test```: Support samples per class for validation tasks
+- ```k-train```: Number of classes in training tasks
+- ```k-test```: Number of classes in validation tasks
+- ```q-train```: Query samples per class for training tasks
+- ```q-test```: Query samples per class for validation tasks
 
 In the main paper of Prototypical network, the author present strong arguments of euclidean distance over cosine distance which also represents the class mean of prototypical representations which we reciprocate in the experiments.
 
