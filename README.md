@@ -208,5 +208,5 @@ Contributions are what make the project such an amazing place to be learn, inspi
 5. Open a Pull Request
 
 #### Acknowledgment: 
-I would like to thanks [(oscarknagg)](https://github.com/oscarknagg/few-shot) for sharing the code and supporting references.
+I would like to thanks [(oscarknagg)](https://github.com/oscarknagg/few-shot) for sharing the code and supporting references. \\
 Images Source: Internet and Paper (refer Important Blogs and paper)
