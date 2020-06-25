@@ -44,19 +44,19 @@ The objective of meta-learning algorithms is to optimize meta parameters. Precis
 
 ## 1. Data Set
 
-Download the datasets from here (small-version) [(Download)](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full-version) [(Download)](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1) Download any version of the dataset as per your requirement. Preferable to perform test how models works on smaller version and then build on full version of the dataset.
+Download the datasets (small-version) [***(Download)***](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full-version) [***(Download)***](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1) Download any version of the dataset as per your requirement.
 
 **DataSet Description**
 
-- id: Images id as in images_folder/.
-- gender: Gender wise fashion items (M/W), etc. 
-- masterCategory: Categories contains type of fashion items such as Apparel, Accessories, etc.
-- SubCategory: Categories contains the specific fashion item category collections, such as Footwear, Watch etc.  
-- articleType: Categories contains the items specifc such as Topwear -> Tshirts, Shirts, Shoes --> Casual, etc.  
-- baseColour: Color of the articleType items such as NavyBlue, Black, Grey, etc. 
-- season: fashion items specific to seasons (fall/winter/summer).
-- usage: Fashion items for specific purposes, such as casual, ethnic, etc.
-- displayName: Name displayed on items with specific attributes. 
+- ```id```: Images id as in images_folder/.
+- ```gender```: Gender wise fashion items (M/W), etc. 
+- ```masterCategory```: Categories contains type of fashion items such as Apparel, Accessories, etc.
+- ```SubCategory```: Categories contains the specific fashion item category collections, such as Footwear, Watch etc.  
+- ```articleType```: Categories contains the items specifc such as Topwear -> Tshirts, Shirts, Shoes --> Casual, etc.  
+- ```baseColour```: Color of the articleType items such as NavyBlue, Black, Grey, etc. 
+- ```season```: fashion items specific to seasons (fall/winter/summer).
+- ```usage```: Fashion items for specific purposes, such as casual, ethnic, etc.
+- ```displayName```: Name displayed on items with specific attributes. 
 
 
 | id | gender| masterCategory| SubCategory| articleType| baseColour| season| usage | productDisplayName        | 
@@ -97,9 +97,10 @@ DATA_PATH/
         images_evaluation/
         refac_images/
 ```
-images_background: contains support classes
-images_evaluation: contains query classes
-refac_images : Images after renamed (based on class name + image_id)
+
+```images_background```: contains support classes
+```images_evaluation```: contains query classes
+```refac_images```: Images after renamed (based on class name + image_id)
 
 ##### Checkpoints (.pth) and Preprocessed Data Set
 If you want to reproduce the results on fashionNet DataSet, use the preprocessed data and Checkpoints.
@@ -119,11 +120,11 @@ Listed in "requirements.txt" Install neccesssary supporting libraries for reprod
 ```
 pip install -r requirements.txt
 ```
-Download Data from the Link, and put inside data folder refer ```data/fashionNet/README.md``` in details. Extract the zip files contains Images, and csv file for fashion product items descriptions or other details.
+Download the Data, and place inside data folder. Extract the zip files.
 
 Edit DATA_PATH in ```config.py``` and replace with the fashionNet dataset location.
 
-Run the command to run all the experiments. 
+Experiments
 ```
 bash chmod +x experiments/run.sh
 ./run.sh
@@ -132,7 +133,7 @@ bash chmod +x experiments/run.sh
 ## 3. Networks
 #### 3.1 ProtoTypical Networks
 
-Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks. (Refer the Theory section for details).
+```Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks```.
 
 **Arguments**
 - dataset: {'fashionNet'}.
@@ -146,7 +147,7 @@ Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks
 
 In the main paper of Prototypical network, the author present strong arguments of euclidean distance over cosine distance which also represents the class mean of prototypical representations which we reciprocate in the experiments.
 
-|               |Fashion |       |       |
+| Small version |    1   |   2   |  3    |
 |---------------|--------|-------|-------|
 |k - ways       | 2      | 3     | 5     |
 |n - shots      | 2      | 4     | 5     |
@@ -156,31 +157,31 @@ In the main paper of Prototypical network, the author present strong arguments o
 
 #### 3.2 Meta Agnostic Meta Learning (MAML)
 
-Run `experiments/maml.py` to reproduce results using MAML Networks. (Refer the Theory section for details).
+```Run `experiments/maml.py` to reproduce results using MAML Networks. (Refer the Theory section for details)```.
 
 **Arguments**
 
-- dataset: {'omniglot', 'miniImageNet'}. Whether to use the Omniglot or miniImagenet dataset
-- distance: {'l2', 'cosine'}. Which distance metric to use
-- n: Support samples per class for few-shot tasks
-- k: Number of classes in training tasks
-- q: Query samples per class for training tasks
-- inner-train-steps: Number of inner-loop updates to perform on training tasks
-- inner-val-steps: Number of inner-loop updates to perform on validation tasks
-- inner-lr: Learning rate to use for inner-loop updates
-- meta-lr: Learning rate to use when updating the meta-learner weights
-- meta-batch-size: Number of tasks per meta-batch
-- order: Whether to use 1st or 2nd order MAML
-- epochs: Number of training epochs
-- epoch-len: Meta-batches per epoch
-- eval-batches: Number of meta-batches to use when evaluating the model after each epoch
+- ```dataset```: {'omniglot', 'miniImageNet'}. Whether to use the Omniglot or miniImagenet dataset
+- ```distance```: {'l2', 'cosine'}. Which distance metric to use
+- ```n```: Support samples per class for few-shot tasks
+- ```k```: Number of classes in training tasks
+- ```q```: Query samples per class for training tasks
+- ```inner-train-steps```: Number of inner-loop updates to perform on training tasks
+- ```inner-val-steps```: Number of inner-loop updates to perform on validation tasks
+- ```inner-lr```: Learning rate to use for inner-loop updates
+- ```meta-lr```: Learning rate to use when updating the meta-learner weights
+- ```meta-batch-size```: Number of tasks per meta-batch
+- ```order```: Whether to use 1st or 2nd order MAML
+- ```epochs```: Number of training epochs
+- ```epoch-len```: Meta-batches per epoch
+- ```eval-batches```: Number of meta-batches to use when evaluating the model after each epoch
 
 
-|           | Order  |Fashion|       |       |
-|-----------|--------|-------|-------|-------|
-|k - ways   |        | 2     | 5     | 5     |
-|n - shots  |        | 1     | 3     | 5     |
-|This Repo  | 1      | 92.67 | 90.65 | 93.23 |
+| Small version | Order  |   1   |   2   |   3   |
+|---------------|--------|-------|-------|-------|
+|k - ways       |        | 2     | 5     | 5     |
+|n - shots      |        | 1     | 3     | 5     |
+|This Repo      | 1      | 92.67 | 90.65 | 93.23 |
 
 
 #### 4. Future Work and Approaches
@@ -190,7 +191,7 @@ We can extend the given problem in many possible ways, however, multimodal few s
 
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/multimodal.png)
 
-In the above figure the product desciption has feeded with Bi-LSTM for extracting textual semantics, whereas the images features is extracted using pretrained ResNet trained on ImageNet instance. The cross attention is incorporated to attend the features of textual attributes with respect to images and vice versa. The further context is passed with fully connected layer and trained on the cross entropy loss.
+In the figure the product desciption has feeded with Bi-LSTM for extracting textual semantics, whereas the images features is extracted using pretrained ResNet. The cross attention is used to attend the features of textual attributes with respect to images and vice versa. The further context is passed with fully connected layer.
 
 ##### 4.2 Zero Shot Learning
 We can extend the module and develop the zero shot learning approach for the task of image classofication on fashion dataset. Zero-Shot Learning is the  type of learning that able to predict classes that has not been seen while training the model. It resembles our ability to generalize and identify new things without explicit supervision.
@@ -207,4 +208,5 @@ Contributions are what make the project such an amazing place to be learn, inspi
 5. Open a Pull Request
 
 #### Acknowledgment: 
-[(oscarknagg)](https://github.com/oscarknagg/few-shot) I would like to thanks for sharing the code and supporting references.
+I would like to thanks [(oscarknagg)](https://github.com/oscarknagg/few-shot) for sharing the code and supporting references.
+Images Source: Internet and Paper (refer Important Blogs and paper)
