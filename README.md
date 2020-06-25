@@ -1,4 +1,4 @@
-## Few Short, Zero Shot and Meta Learning Research
+## Few Shot, Zero Shot and Meta Learning Research
 
 The objective of the repository is working on a few shot, zero-shot, and meta learning problems and also to write readable, clean, and tested code. Below is the implementation of a few-shot image classification problems.
 
