@@ -1,6 +1,6 @@
 ## Few Shot, Zero Shot and Meta Learning Research
 
-The objective of the repository is working on a few shot, zero-shot, and meta learning problems and also to write readable, clean, and tested code. Below is the implementation of a few-shot image classification problems.
+The objective of the repository is working on a few shot, zero-shot, and meta learning problems and also to write readable, clean, and tested code. Below is the implementation of a few-shot algorithms for image classification.
 
 ## Important Blogs and Paper
 
@@ -15,7 +15,7 @@ The objective of the repository is working on a few shot, zero-shot, and meta le
 9. [Implementation in PyTorch](https://towardsdatascience.com/advances-in-few-shot-learning-reproducing-results-in-pytorch-aba70dee541d)
 10. [Few Shot Learning in CVPR 2019](https://towardsdatascience.com/few-shot-learning-in-cvpr19-6c6892fc8c5)
 
-## 1. Introduction
+## Introduction
 
 ### What is Few Shot Learning?
 With the advancement of machine learning mainly in computational resources, and has been highly successful in data-intensive application but often slows down when the data is small. Recently, few-shot learning (FSL) is proposed to tackle this problem. Using prior knowledge, FSL can generalize to new tasks containing few samples with supervision. Based on how prior knowledge can be used to handle this core issue, FSL methods categorize into three perspectives: (i) data, which uses prior knowledge to augment the supervised experience (ii) model, which uses prior knowledge to reduce the size of the hypothesis
@@ -26,7 +26,7 @@ Consider a learning task T , FSL deals with a data set D = {Dtrain,Dtest} consis
 
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/FSL_methods.jpg)
 
-## 2. Theory
+## Theory
 ### Prototypical Networks
 
 ![](https://github.com/Shandilya21/few_shot_research/raw/master/images/proto_nets_diagram.png)
@@ -42,82 +42,36 @@ To achieve optimal few shot performance [(Snell et.al)](https://arxiv.org/pdf/17
 
 The objective of meta-learning algorithms is to optimize meta parameters. Precisely, we have algorithms that access to the training loss and some meta parameters and output some optimal or learned parameters. Likewise, Meta Agnostic Meta-Learning short for MAML is an optimization algorithm compatible with the model that learns through gradient descent. The meta parameters was a point of initialization for the SGD algorithms shared between all the independent task. Since the SGD update is differentiable, one can compute the gradients concerning meta parameters simply through backpropagation.
 
-## 1. Data Set
 
-Download the datasets (small-version) [***(Download)***](https://www.kaggle.com/paramaggarwal/fashion-product-images-small), (full-version) [***(Download)***](https://www.kaggle.com/paramaggarwal/fashion-product-images-dataset/version/1). 
+## Setup
+### Requirements
 
-**Dataset Description**
+This codebase requires Python 3.5 (or higher). We recommend using Anaconda or Miniconda for setting up the virtual environment. Here's a walk through for the installation and setup.
 
-- ```id```: Images id as in images_folder.
-- ```gender```: Gender wise fashion items (M/W), etc. 
-- ```masterCategory```: Categories contains type of fashion items such as Apparel, Accessories, etc.
-- ```SubCategory```: Categories contains the specific fashion item category collections, such as Footwear, Watch etc.  
-- ```articleType```: Categories contains the items specifc such as Topwear -> Tshirts, Shirts, Shoes --> Casual, etc.  
-- ```baseColour```: Color of the articleType items such as NavyBlue, Black, Grey, etc. 
-- ```season```: fashion items specific to seasons (fall/winter/summer).
-- ```usage```: Fashion items for specific purposes, such as casual, ethnic, etc.
-- ```displayName```: Name displayed on items with specific attributes. 
-
-
-| id | gender| masterCategory| SubCategory| articleType| baseColour| season| usage | productDisplayName        | 
-|----|-------|---------------|------------|------------|-----------|-------|-------|---------------------------|
-|1163| Male  | Apparel       | TopWear    | Shirt      | NavyBlue  | Fall  | Ethnic| Turtle Men Navy Blue Shirt|
-|1165| Female| Apparal       | BottomWear | Jeans      | Black     | Summer| Casual| Levis Female Black Jeans  |
-|2152| Female| Accessories   | Watches    | Watches    | Silver	   | Winter| Formal| Titan Women Silver Watch  |
-|1455| Girl  | Apparel       | TopWeat    | Tshirt     | Grey	   | Summer| Casual| Gini Jony Girls Knit Top  |
-
-
-## 2 Experiment Setup
-### 2.1 Requirements
-
-```Language: Python 3.5``` <br />
-Use virtualenv (preferable). <br />
 Clone the Repository
 ```
 git clone https://github.com/Shandilya21/few_shot_research.git
+cd Few-Shot
+conda create -n few_shot python=3.5
+conda activate few_shot
 ```
-
-Edit DATA_PATH in ```config.py``` and replace with appropriate __dataset_path__. <br />
 Install all supporting libraries and packages in "requirements.txt".
 ```
 pip install -r requirements.txt
 ```
 Download the data, and place inside data folder. Extract the zip files to continue.
 
-#### 2.2 Data Preperations for fashionNet Dataset
+Edit DATA_PATH in ```config.py``` and replace with appropriate __dataset_path__. <br />
 
-###### (i). Data Preprocessing Approach:
- * Preprocess (.csv) file by removing [NaN, empty rows or columns, incomplete data], eithier by removing or augmentation.
- * Rename Images to their class name with image id, for e.g: images/7100.jpg --> images/"Duffel Bag__7100.jpg".
- * Split the Meta training (support) and testing (query), for eg:, cufflinks ---> background classes, Shirts, Tie, etc ---> evaluation classes. 
- * Moved the images to their respective class name folder.
- * FOr more details, refer code ```script/prepare_fashionNet.py```.
-
-###### (ii) DataLoader or n_shot_preprocessing
-* Images ('RGB') of ~ [60 X 80] ------> CenterCrop(56), and Resize to (28, 28).
-* In ```core.py/prepare_n_shot```, you may find the n shot task label. return tensor [q_queries * K_shots, ]. Nshotsampler is wrapper class that generates batches of n-shot, k-way, q-query tasks. Also, The support and query set are disjoint i.e. do not contain overlapping samples.
-
-Follow the below instructions to prepare the fashionNet dataset
+Kindly go through below instructions for fashionNet dataset preperation
 
 ```
 python script/prepare_fashionNet.py
 ```
-After acquiring the data and running the setup scripts your folder structure would look like
 
-```
-DATA_PATH/
-    fashionNet/
-        images_background/
-        images_evaluation/
-        refac_images/
-```
+To know the dataset in details, kindly refer ```data/fashionNet/README.md```.
 
-```images_background```: contains support classes <br />
-```images_evaluation```: contains query classes <br />
-```refac_images```: Images after renamed (based on class name + image_id) <br />
-
-
-#### Run Experiments
+#### Training
 ```
 bash chmod +x experiments/run.sh
 ./run.sh
@@ -125,10 +79,10 @@ bash chmod +x experiments/run.sh
 
 ### Checkpoints (.pth) and Preprocessed Data Set
 To reproduce the results on fashionNet DataSet, download the preprocessed data and Checkpoints.
-[***(Download)***](https://drive.google.com/drive/folders/1jTHGsISd44RkwBcWP-LTRhGbfYbBpBZG?usp=sharing) place the files inside ```DATA_PATH/fashionNet/```. 
+[***(Download)***](https://drive.google.com/drive/folders/1jTHGsISd44RkwBcWP-LTRhGbfYbBpBZG?usp=sharing) place the files inside ```DATA_PATH/fashionNet/```.
 
-## 3. Networks
-#### 3.1 ProtoTypical Networks
+## Approach
+#### ProtoTypical Networks
 
 ```Run `experiments/proto_nets.py` to reproduce results using Prototypical Networks```.
 
@@ -152,7 +106,7 @@ In the main paper of Prototypical network, the author present strong arguments o
 |This Repo (Cos)| 72.5   | 73.88 | 77.68 |
 
 
-#### 3.2 Meta Agnostic Meta Learning (MAML)
+#### Meta Agnostic Meta Learning (MAML)
 
 ```Run `experiments/maml.py` to reproduce results using MAML Networks. (Refer the Theory section for details)```.
 
@@ -181,29 +135,14 @@ In the main paper of Prototypical network, the author present strong arguments o
 |This Repo      | 1      | 92.67 | 90.65 | 93.23 |
 
 
-#### 4. Future Work and Approaches
-##### 4.1 Multimodal Few Shot Classification
-
-We can extend the given problem in many possible ways, however, multimodal few shot classification one of the potential approaches that have an active research in dialogue, and question answering systems and shows significant results. A multi-modal approach facilitates bridging the information gap by means of meaningful joint embeddings. Similar previous research includes [(Chen Xing et.al)](https://papers.nips.cc/paper/8731-adaptive-cross-modal-few-shot-learning.pdf), [(Frederik Pahde et.al)](https://openreview.net/pdf?id=HJB8ntJPG) open a new frontier of research in the respective areas. In given problem we extend to use ```productDisplay``` (refer dataset-table), which have unique description for every fashion products as intutive inference for the images to build an effective classifier with less number of samples for each classes. We can build a end to end multimodal classifier, which has both the modalities (text and images) while training and only images during test time.
-
-![](https://github.com/Shandilya21/few_shot_research/raw/master/images/multimodal.png)
-
- The cross attention is used to attend the features of textual attributes with respect to images and vice versa. The modalities features further fused using fusion technique such as MFB, MFH, etc. to build the context. The further context is passed with fully connected layer.
-
-##### 4.2 Zero Shot Learning
-We can extend the module and develop the zero shot learning approach for the task of image classofication on fashion dataset. Zero-Shot Learning is the  type of learning that able to predict classes that has not been seen while training the model. It resembles our ability to generalize and identify new things without explicit supervision.
+### TODO
+* Multimodal Few Shot Classification.
+* Zero Shot Image Classification.
 
 <!-- CONTRIBUTING -->
 #### Contributing
 
-Contributions are what make the project such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are very welcome. If you know how to make this code better, please open an issue. If you want to submit a pull request, please open an issue first. Also see the todo list below.
 
-1. Fork the Project
-2. Create your Feature Branch (`git build -b build/newfeature`)
-3. Commit your Changes (`git commit -m 'Add some newfeature'`)
-4. Push to the Branch (`git push origin build/newfeature`)
-5. Open a Pull Request
-
-#### Acknowledgment: 
-I would like to thanks [(oscarknagg)](https://github.com/oscarknagg/few-shot) for sharing the code and supporting references. \\
-Images Source: Internet and Paper (refer Important Blogs and paper)
+#### Implementation References
+* [(oscarknagg)](https://github.com/oscarknagg/few-shot) for implementation (code in PyTorch).
