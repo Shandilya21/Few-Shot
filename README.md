@@ -140,9 +140,9 @@ In the main paper of Prototypical network, the author present strong arguments o
 * Zero Shot Image Classification.
 
 <!-- CONTRIBUTING -->
-#### Contributing
+## Contributing
 
-Contributions are very welcome. If you know how to make this code better, please open an issue. If you want to submit a pull request, please open an issue first. Also see the todo list below.
+Contributions are very welcome. If you know how to make this code better, please open an issue. If you want to submit a pull request, please open an issue first.
 
-#### Implementation References
+## Implementation References
 * [(oscarknagg)](https://github.com/oscarknagg/few-shot) for implementation (code in PyTorch).
