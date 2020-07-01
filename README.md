@@ -1,3 +1,8 @@
+<a href="https://github.com/Shandilya21/Few-Shot/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/Shandilya21/Few-Shot"></a> 
+<a href="https://github.com/Shandilya21/Few-Shot/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/Shandilya21/Few-Shot"></a>
+<a href="https://github.com/Shandilya21/Few-Shot/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Shandilya21/Few-Shot"></a>
+<a href="https://github.com/Shandilya21/Few-Shot/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/Shandilya21/Few-Shot"></a>
+
 ## Few Shot, Zero Shot and Meta Learning Research
 
 The objective of the repository is working on a few shot, zero-shot, and meta learning problems and also to write readable, clean, and tested code. Below is the implementation of a few-shot algorithms for image classification.
