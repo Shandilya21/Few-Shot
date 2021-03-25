@@ -3,7 +3,7 @@ torchvision==0.2.0
 tqdm==4.28.1
 scikit-image==0.15.0
 scikit-learn==0.21.3
-PyYAML==5.1
+PyYAML==5.4
 pyzmq==18.1.0
 regex==2019.6.8
 Pillow==6.2.2
