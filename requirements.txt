@@ -12,7 +12,7 @@ opencv-python==3.1.0.0
 opt-einsum==3.1.0
 packaging==19.2
 pandas==0.17.0
-notebook==6.0.1
+notebook==6.4.1
 numpy==1.16.0
 natsort==7.0.0
 matplotlib==3.0.3
