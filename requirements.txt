@@ -8,7 +8,7 @@ pyzmq==18.1.0
 regex==2019.6.8
 Pillow==6.2.2
 pip==20.1
-opencv-python==3.1.0.0
+opencv-python==4.2.0.32
 opt-einsum==3.1.0
 packaging==19.2
 pandas==0.17.0
