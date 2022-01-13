@@ -6,7 +6,7 @@ scikit-learn==0.21.3
 PyYAML==5.1
 pyzmq==18.1.0
 regex==2019.6.8
-Pillow==6.2.2
+Pillow==9.0.0
 pip==20.1
 opencv-python==3.1.0.0
 opt-einsum==3.1.0
